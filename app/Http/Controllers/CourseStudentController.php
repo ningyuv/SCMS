@@ -56,6 +56,43 @@ class CourseStudentController extends Controller
             ]);
         }
 
+        if ($selectable_course->course_type_id == 1 &&
+            $student->selectable_courses
+                ->where('course_type_id','1')
+                ->pluck('course')
+                ->pluck('credit')
+                ->sum()
+            + $selectable_course->course->credit > $student->compulsory_credit) {
+            return response()->json([
+                'success' => false,
+                'message' => '必修学分超限'
+            ]);
+        }
+        if ($selectable_course->course_type_id == 2 &&
+            $student->selectable_courses
+                ->where('course_type_id','2')
+                ->pluck('course')
+                ->pluck('credit')
+                ->sum()
+            + $selectable_course->course->credit > $student->restriction_credit) {
+            return response()->json([
+                'success' => false,
+                'message' => '限选学分超限'
+            ]);
+        }
+        if ($selectable_course->course_type_id == 3 &&
+            $student->selectable_courses
+                ->where('course_type_id','3')
+                ->pluck('course')
+                ->pluck('credit')
+                ->sum()
+            + $selectable_course->course->credit > $student->optional_credit) {
+            return response()->json([
+                'success' => false,
+                'message' => '任选学分超限'
+            ]);
+        }
+
         return CourseStudent::create([
             'student_id' => $request->student_id,
             'selectable_course_id' => $request->selectable_course_id

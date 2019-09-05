@@ -21,18 +21,31 @@
                         <h5 class="card-header">选课</h5>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <h3 class="col-md-2">必修学分: {{ compulsory_credit }}/{{ user.compulsory_credit }}</h3>
+                                <h3 class="col-md-2">限选学分: {{ restriction_credit }}/{{ user.restriction_credit }}</h3>
+                                <h3 class="col-md-2">任选学分: {{ optional_credit }}/{{ user.optional_credit }}</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
                                     <select name="teacher" id="teacher" class="form-control">
                                         <option value="0">--教师姓名--</option>
                                         <option :value="teacher.id" v-for="teacher in teachers">{{ teacher.name }}
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <select name="department" id="department" class="form-control">
                                         <option value="0">--开课院系--</option>
                                         <option :value="department.id" v-for="department in departments">{{
                                             department.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="course_type" id="course_type_id" class="form-control">
+                                        <option value="0">--课程性质--</option>
+                                        <option :value="course_type.id" v-for="course_type in course_types">{{
+                                            course_type.name }}
                                         </option>
                                     </select>
                                 </div>
@@ -55,6 +68,7 @@
                                 <tr>
                                     <th scope="col">编号</th>
                                     <th scope="col">课程编号</th>
+                                    <th scope="col">课程性质</th>
                                     <th scope="col">课程名称</th>
                                     <th scope="col">开课院系</th>
                                     <th scope="col">学分</th>
@@ -68,6 +82,7 @@
                                 <tr v-for="course in selectable_courses">
                                     <th>{{ course.id }}</th>
                                     <th>{{ course.course.number }}</th>
+                                    <th>{{ course.course_type.name }}</th>
                                     <th>{{ course.course.name }}</th>
                                     <th>{{ course.course.department?course.course.department.name:'' }}</th>
                                     <th>{{ course.course.credit }}</th>
@@ -79,7 +94,7 @@
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
                                     <th>
                                         <button :class="['btn', [is_selected(course.id)?'btn-danger':'btn-success']]"
-                                                @click="toggle_selected(course.id)" :disabled="toggling">
+                                                @click="toggle_selected(course.id)" :disabled="toggling||course.course_type_id==1">
                                             {{is_selected(course.id)?'删除':'选课'}}
                                         </button>
                                     </th>
@@ -136,7 +151,7 @@
                                                                 arrangement.selectable_course.course.name }} ({{ arrangement.selectable_course.teacher?arrangement.selectable_course.teacher.name:'' }})
                                                             </div>
                                                             <div>
-                                                                {{ arrangement.weeks }} weeks
+                                                                {{ arrangement.weeks }} 周
                                                             </div>
                                                             <div>
                                                                 {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{
@@ -156,6 +171,7 @@
                                 <tr>
                                     <th scope="col">编号</th>
                                     <th scope="col">课程编号</th>
+                                    <th scope="col">课程性质</th>
                                     <th scope="col">课程名称</th>
                                     <th scope="col">开课院系</th>
                                     <th scope="col">学分</th>
@@ -166,9 +182,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="course in selectable_courses" v-if="is_selected(course.id)">
+                                <tr v-for="course in user.selectable_courses">
                                     <th>{{ course.id }}</th>
                                     <th>{{ course.course.number }}</th>
+                                    <th>{{ course.course_type.name }}</th>
                                     <th>{{ course.course.name }}</th>
                                     <th>{{ course.course.department.name }}</th>
                                     <th>{{ course.course.credit }}</th>
@@ -180,7 +197,7 @@
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
                                     <th>
                                         <button :class="['btn', [is_selected(course.id)?'btn-danger':'btn-success']]"
-                                                @click="toggle_selected(course.id)" :disabled="toggling">
+                                                @click="toggle_selected(course.id)" :disabled="toggling||course.course_type_id==1">
                                             {{is_selected(course.id)?'删除':'选课'}}
                                         </button>
                                     </th>
@@ -307,6 +324,7 @@
                 current_student_password: '',
                 teachers: [],
                 departments: [],
+                course_types: [],
                 toggling: false,
                 genders: ['未知', '男', '女'],
                 courses: []
@@ -319,15 +337,22 @@
                         teacher_id: $('#teacher').val(),
                         department_id: $('#department').val(),
                         course_name: $('#course_name').val(),
-                        course_number: $('#course_number').val()
+                        course_number: $('#course_number').val(),
+                        course_type_id: $('#course_type_id').val()
                     }
                 }).then((res) => {
                     this.selectable_courses = res.data
+                    this.update_user()
                 })
             },
             update_course_student() {
                 this.axios.get('/api/course_student').then((res) => {
                     this.course_student = res.data
+                })
+            },
+            update_course_types() {
+                this.axios.get(`/api/course_types`).then(res => {
+                    this.course_types = res.data
                 })
             },
             update_user() {
@@ -434,8 +459,32 @@
             this.update_course_student()
             this.update_teachers()
             this.update_departments()
+            this.update_course_types()
         },
-        computed: {}
+        computed: {
+            compulsory_credit() {
+                let credit = 0
+                console.log(this.user.selectable_courses)
+                for (let i of this.user.selectable_courses.filter(it=>it.course_type_id==1)) {
+                    credit+=parseFloat(i.course.credit)
+                }
+                return credit.toFixed(1)
+            },
+            restriction_credit() {
+                let credit = 0
+                for (let i of this.user.selectable_courses.filter(it=>it.course_type_id==2)) {
+                    credit+=parseFloat(i.course.credit)
+                }
+                return credit.toFixed(1)
+            },
+            optional_credit() {
+                let credit = 0
+                for (let i of this.user.selectable_courses.filter(it=>it.course_type_id==3)) {
+                    credit+=parseFloat(i.course.credit)
+                }
+                return credit.toFixed(1)
+            }
+        }
     }
 </script>
 

@@ -546,6 +546,7 @@
                                 <tr>
                                     <th scope="col">编号</th>
                                     <th scope="col">课程编号</th>
+                                    <th scope="col">课程性质</th>
                                     <th scope="col">课程名称</th>
                                     <th scope="col">上课时间地点</th>
                                     <th scope="col">教师</th>
@@ -558,6 +559,7 @@
                                 <tr v-for="course in selectable_courses">
                                     <th>{{ course.id }}</th>
                                     <th>{{ course.course.number }}</th>
+                                    <th>{{ course.course_type.name }}</th>
                                     <th>{{ course.course.name }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
@@ -609,6 +611,19 @@
                                                                 <option value="0">--选择课程--</option>
                                                                 <option :value="course.id" v-for="course in courses">
                                                                     {{ course.name }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">课程性质</label>
+
+                                                        <div class="col">
+                                                            <select name="course_id" class="form-control" v-model:value="current_selectable_course.course_type_id">
+                                                                <option value="0">--选择课程性质--</option>
+                                                                <option :value="course_type.id" v-for="course_type in course_types">
+                                                                    {{ course_type.name }}
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -1142,6 +1157,7 @@
                 majors: [],
                 courses: [],
                 selectable_courses: [],
+                course_types: [],
                 departments: [],
                 classrooms: [],
                 current_arrangement_id: 0,
@@ -1171,6 +1187,7 @@
             this.update_departments()
             this.update_buildings()
             this.update_classrooms()
+            this.update_course_types()
             $('#list-tab>.list-group-item').on('click', ()=> {
                 $('#collapseOne').collapse('hide')
             })
@@ -1183,6 +1200,11 @@
                     }
                 }).then(res => {
                     this.user = res.data
+                })
+            },
+            update_course_types() {
+                this.axios.get(`/api/course_types`).then(res => {
+                    this.course_types = res.data
                 })
             },
             update_user_info() {
@@ -1403,6 +1425,9 @@
                     }).then(res => {
                         this.update_students()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1422,6 +1447,9 @@
                     }).then(res => {
                         this.update_students()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1452,6 +1480,9 @@
                     }).then(res => {
                         this.update_teachers()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1470,6 +1501,9 @@
                     }).then(res => {
                         this.update_teachers()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1497,6 +1531,9 @@
                     }).then(res => {
                         this.update_courses()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1515,6 +1552,9 @@
                     }).then(res => {
                         this.update_courses()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1541,6 +1581,9 @@
                     }).then(res => {
                         this.update_selectable_courses()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1560,6 +1603,9 @@
                     }).then(res => {
                         this.update_selectable_courses()
                         $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {
                             let str = ''
@@ -1925,6 +1971,9 @@
                 }).then(res => {
                     this.update_buildings()
                     $('.modal').modal('hide')
+                    if (res.data.message) {
+                        alert(res.data.message)
+                    }
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''
@@ -1946,6 +1995,9 @@
                 }).then(res => {
                     this.update_classrooms()
                     $('.modal').modal('hide')
+                    if (res.data.message) {
+                        alert(res.data.message)
+                    }
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''
@@ -1965,6 +2017,9 @@
                 }).then(res => {
                     this.update_departments()
                     $('.modal').modal('hide')
+                    if (res.data.message) {
+                        alert(res.data.message)
+                    }
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''
@@ -1985,6 +2040,9 @@
                 }).then(res => {
                     this.update_majors()
                     $('.modal').modal('hide')
+                    if (res.data.message) {
+                        alert(res.data.message)
+                    }
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''

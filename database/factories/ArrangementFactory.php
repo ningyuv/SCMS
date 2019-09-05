@@ -9,15 +9,15 @@ use Faker\Generator as Faker;
 
 $factory->define(Arrangement::class, function (Faker $faker) {
     $selectable_course = random_item(SelectableCourse::class);
-    $start = random_int(1,9);
-    $end = random_int(1,9);
+    $start = 1;
+    $end = random_int(0,1)?8:16;
     $delta = 2;
     $start_week = random_int(0,3)*2+1;
 
     $weeks = min($start,$end).'-'.max($start,$end);
     $sessions = random_int(1,5).':'.$start_week.'-'.($start_week+$delta);
 
-    $classroom_id = random_item(\App\Classroom::class);
+    $classroom_id = random_item(\App\Classroom::class, true);
     $arrangement_saving = Arrangement::make([
         'selectable_course_id' => $selectable_course,
         'classroom_id' => $classroom_id,

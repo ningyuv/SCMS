@@ -14,7 +14,10 @@ $factory->define(Student::class, function (Faker $faker) {
         'name' => $faker->name,
         'gender' => $faker->numberBetween(1,2),
         'enrollment_year' => $faker->year,
-        'major_id' => random_item(\App\Major::class),
+        'major_id' => random_item(\App\Major::class, true),
         'api_token' => Str::random(60),
+        'compulsory_credit' => random_int(5,8),
+        'restriction_credit' => random_int(5,8),
+        'optional_credit' => random_int(10,12),
     ];
 });

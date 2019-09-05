@@ -18,6 +18,7 @@ class CreateSelectableCoursesTable extends Migration
             $table->bigInteger('course_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned()->nullable();
             $table->integer('max_num');
+            $table->bigInteger('course_type_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

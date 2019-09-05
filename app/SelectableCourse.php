@@ -11,7 +11,7 @@ class SelectableCourse extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'course_id', 'teacher_id', 'max_num'
+        'course_id', 'teacher_id', 'max_num', 'course_type_id'
     ];
 
     public function students(){
@@ -28,6 +28,9 @@ class SelectableCourse extends Model
     }
     public function course_students() {
         return $this->hasMany(CourseStudent::class);
+    }
+    public function course_type() {
+        return $this->belongsTo(CourseType::class);
     }
 
     use SoftCascadeTrait;

@@ -19,8 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::middleware('auth:api-student')->get('/user/student', function (Request $request) {
     return $request->user()->with(
-        'selectable_courses.course',
+        'selectable_courses.course.department',
+        'selectable_courses.students',
         'selectable_courses.teacher',
+        'selectable_courses.course_type',
         'selectable_courses.arrangements.selectable_course.course',
         'selectable_courses.arrangements.selectable_course.teacher',
         'selectable_courses.arrangements.classroom.building',
@@ -49,3 +51,4 @@ Route::resource('/buildings', 'BuildingsController');
 Route::resource('/majors', 'MajorsController');
 Route::resource('/departments', 'DepartmentsController');
 Route::resource('/classrooms', 'ClassroomsController');
+Route::resource('/course_types', 'CourseTypesController');

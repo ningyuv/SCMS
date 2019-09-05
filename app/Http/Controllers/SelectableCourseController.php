@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\CourseStudent;
+use App\CourseType;
 use App\SelectableCourse;
+use App\Student;
 use Illuminate\Http\Request;
 
 class SelectableCourseController extends Controller
@@ -21,12 +24,16 @@ class SelectableCourseController extends Controller
         if (\request()->credit && \request()->credit != 0) {
             array_push($arr, ['credit', \request()->credit]);
         }
+        if (\request()->course_type_id && \request()->course_type_id != 0) {
+            array_push($arr, ['course_type_id', \request()->course_type_id]);
+        }
         $builder = SelectableCourse::with(
             'course.department',
             'arrangements.classroom.building',
             'arrangements.selectable_course.course',
             'teacher',
-            'students'
+            'students',
+            'course_type'
         )->where($arr)
             ->whereHas('course', function ($query) {
                 $query->where('name', 'like', '%' . \request()->course_name . '%');
@@ -61,10 +68,17 @@ class SelectableCourseController extends Controller
      */
     public function store(Request $request)
     {
-        SelectableCourse::create($request->selectable_course);
+        $course = SelectableCourse::create($request->selectable_course);
+        if ($request->selectable_course['course_type_id'] == 1) {
+            foreach (Student::all() as $student) {
+                CourseStudent::create([
+                    'student_id' => $student->id,
+                    'selectable_course_id' => $course->id
+                ]);
+            }
+        }
         return response()->json([
             'success' => true,
-            'message' => ''
         ]);
     }
 
@@ -99,6 +113,29 @@ class SelectableCourseController extends Controller
      */
     public function update(Request $request, SelectableCourse $selectableCourse)
     {
+        $course_saving = clone $selectableCourse;
+        foreach (CourseType::first()->selectable_courses as $that_course) {
+            foreach ($that_course->arrangements as $arrangement1) {
+                foreach ($course_saving->arrangements as $arrangement2) {
+                    if ($course_saving->id != $that_course->id && arrangement_conflict($arrangement1, $arrangement2)) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => '与另一必修课 '.$that_course->course->name.'('.$that_course->teacher->name.') 冲突'
+                        ]);
+                    }
+                }
+            }
+        }
+        if ($request->selectable_course['course_type_id'] == 1) {
+            foreach (Student::all() as $student) {
+                if (!$student->selectable_courses->contains('id', $selectableCourse->id)) {
+                    CourseStudent::create([
+                        'student_id' => $student->id,
+                        'selectable_course_id' => $selectableCourse->id
+                    ]);
+                }
+            }
+        }
         $selectableCourse->update($request->selectable_course);
         return response()->json([
             'success' => true,
