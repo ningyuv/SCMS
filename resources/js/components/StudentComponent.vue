@@ -79,7 +79,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="course in selectable_courses">
+                                <tr v-for="course in selectable_courses" v-if="new Date(course.updated_at) >= finish_date">
                                     <th>{{ course.id }}</th>
                                     <th>{{ course.course.number }}</th>
                                     <th>{{ course.course_type.name }}</th>
@@ -108,7 +108,7 @@
                 <div class="tab-pane fade"
                      id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
                     <div class="card">
-                        <h5 class="card-header">按周查课表</h5>
+                        <h5 class="card-header">已选课程</h5>
                         <div class="card-body">
                             <button class="btn btn-primary" data-toggle="modal"
                                     data-target=".bd-example-modal-xl">按周查课表
@@ -197,7 +197,7 @@
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
                                     <th>
                                         <button :class="['btn', [is_selected(course.id)?'btn-danger':'btn-success']]"
-                                                @click="toggle_selected(course.id)" :disabled="toggling||course.course_type_id==1">
+                                                @click="toggle_selected(course.id)" :disabled="toggling||course.course_type_id==1||finish_date>=new Date(course.updated_at)">
                                             {{is_selected(course.id)?'删除':'选课'}}
                                         </button>
                                     </th>
@@ -327,7 +327,8 @@
                 course_types: [],
                 toggling: false,
                 genders: ['未知', '男', '女'],
-                courses: []
+                courses: [],
+                finish_date: new Date()
             }
         },
         methods: {
@@ -451,7 +452,16 @@
                 }).finally(res => {
                     this.current_student_password = ''
                 })
-            }
+            },
+            get_finish() {
+                this.axios.get('/api/finish', {
+                    params: {
+                        api_token: $('#api_token').val(),
+                    }
+                }).then(res => {
+                    this.finish_date = new Date(res.data)
+                })
+            },
         },
         mounted() {
             this.update_selectable_courses()
@@ -460,11 +470,11 @@
             this.update_teachers()
             this.update_departments()
             this.update_course_types()
+            this.get_finish()
         },
         computed: {
             compulsory_credit() {
                 let credit = 0
-                console.log(this.user.selectable_courses)
                 for (let i of this.user.selectable_courses.filter(it=>it.course_type_id==1)) {
                     credit+=parseFloat(i.course.credit)
                 }

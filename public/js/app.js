@@ -4866,6 +4866,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminComponent",
@@ -4904,7 +4911,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       new_arrangement_session_end: 0,
       new_arrangement_classroom_id: 0,
       sub_tab: 'list-tab-building',
-      modify_mode: true
+      modify_mode: true,
+      finish_date: new Date()
     };
   },
   mounted: function mounted() {
@@ -4918,6 +4926,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.update_buildings();
     this.update_classrooms();
     this.update_course_types();
+    this.get_finish();
     $('#list-tab>.list-group-item').on('click', function () {
       $('#collapseOne').collapse('hide');
     });
@@ -6714,6 +6723,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           alert(str);
         }
       });
+    },
+    finish: function finish() {
+      var _this35 = this;
+
+      this.axios.post('/api/finish', {
+        api_token: $('#api_token').val(),
+        leave_data: $('#checkbox').prop('checked')
+      }).then(function (res) {
+        console.log(res);
+
+        _this35.get_finish();
+      });
+    },
+    get_finish: function get_finish() {
+      var _this36 = this;
+
+      this.axios.get('/api/finish', {
+        params: {
+          api_token: $('#api_token').val()
+        }
+      }).then(function (res) {
+        _this36.finish_date = new Date(res.data);
+      });
     }
   }
 });
@@ -7100,7 +7132,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       course_types: [],
       toggling: false,
       genders: ['未知', '男', '女'],
-      courses: []
+      courses: [],
+      finish_date: new Date()
     };
   },
   methods: {
@@ -7257,6 +7290,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       })["finally"](function (res) {
         _this8.current_student_password = '';
       });
+    },
+    get_finish: function get_finish() {
+      var _this9 = this;
+
+      this.axios.get('/api/finish', {
+        params: {
+          api_token: $('#api_token').val()
+        }
+      }).then(function (res) {
+        _this9.finish_date = new Date(res.data);
+      });
     }
   },
   mounted: function mounted() {
@@ -7266,11 +7310,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.update_teachers();
     this.update_departments();
     this.update_course_types();
+    this.get_finish();
   },
   computed: {
     compulsory_credit: function compulsory_credit() {
       var credit = 0;
-      console.log(this.user.selectable_courses);
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -65776,7 +65820,21 @@ var render = function() {
             [_vm._v("个人信息")]
           )
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "mt-2 justify-content-center" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary w-100 btn-lg",
+            staticStyle: { "font-size": "1rem" },
+            on: { click: _vm.finish }
+          },
+          [_vm._v("本次选课完成，开始下次选课")]
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-10" }, [
@@ -65802,9 +65860,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "row" }, [
-                    _vm._m(0),
-                    _vm._v(" "),
                     _vm._m(1),
+                    _vm._v(" "),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-3" }, [
                       _c(
@@ -65873,7 +65931,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(2),
+                      _vm._m(3),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -65964,7 +66022,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(3),
+                            _vm._m(4),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -66546,11 +66604,11 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "row" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
                     _vm._m(5),
                     _vm._v(" "),
                     _vm._m(6),
+                    _vm._v(" "),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-2" }, [
                       _c(
@@ -66587,7 +66645,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(7),
+                      _vm._m(8),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -66662,7 +66720,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(8),
+                            _vm._m(9),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -67050,7 +67108,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(9),
+                      _vm._m(10),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -67127,7 +67185,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(10),
+                            _vm._m(11),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -67500,9 +67558,9 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(11),
-                    _vm._v(" "),
                     _vm._m(12),
+                    _vm._v(" "),
+                    _vm._m(13),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-2" }, [
                       _c(
@@ -67539,104 +67597,111 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(13),
+                      _vm._m(14),
                       _vm._v(" "),
                       _c(
                         "tbody",
                         _vm._l(_vm.selectable_courses, function(course) {
-                          return _c("tr", [
-                            _c("th", [_vm._v(_vm._s(course.id))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course.number))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course_type.name))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course.name))]),
-                            _vm._v(" "),
-                            _c(
-                              "th",
-                              _vm._l(course.arrangements, function(
-                                arrangement
-                              ) {
-                                return _c("div", [
+                          return new Date(course.updated_at) >= _vm.finish_date
+                            ? _c("tr", [
+                                _c("th", [_vm._v(_vm._s(course.id))]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(course.course.number))
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(course.course_type.name))
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v(_vm._s(course.course.name))]),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  _vm._l(course.arrangements, function(
+                                    arrangement
+                                  ) {
+                                    return _c("div", [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(arrangement.weeks) +
+                                          "周 星期" +
+                                          _vm._s(arrangement.sessions) +
+                                          "节 " +
+                                          _vm._s(
+                                            arrangement.classroom
+                                              ? arrangement.classroom.building
+                                                  .name
+                                              : ""
+                                          ) +
+                                          " " +
+                                          _vm._s(
+                                            arrangement.classroom
+                                              ? arrangement.classroom.name
+                                              : ""
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ])
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c("th", [
                                   _vm._v(
-                                    "\n                                        " +
-                                      _vm._s(arrangement.weeks) +
-                                      "周 星期" +
-                                      _vm._s(arrangement.sessions) +
-                                      "节 " +
-                                      _vm._s(
-                                        arrangement.classroom
-                                          ? arrangement.classroom.building.name
-                                          : ""
-                                      ) +
-                                      " " +
-                                      _vm._s(
-                                        arrangement.classroom
-                                          ? arrangement.classroom.name
-                                          : ""
-                                      ) +
-                                      "\n                                    "
+                                    _vm._s(
+                                      course.teacher ? course.teacher.name : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(course.students.length) +
+                                      "/" +
+                                      _vm._s(course.max_num)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        "data-toggle": "modal",
+                                        "data-target": "#selectable_courseModel"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.change_current_selectable_course(
+                                            course
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("修改")]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.delete_selectable_course(
+                                            course
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("删除")]
                                   )
                                 ])
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _c("th", [
-                              _vm._v(
-                                _vm._s(
-                                  course.teacher ? course.teacher.name : ""
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _vm._v(
-                                _vm._s(course.students.length) +
-                                  "/" +
-                                  _vm._s(course.max_num)
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: {
-                                    "data-toggle": "modal",
-                                    "data-target": "#selectable_courseModel"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.change_current_selectable_course(
-                                        course
-                                      )
-                                    }
-                                  }
-                                },
-                                [_vm._v("修改")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.delete_selectable_course(
-                                        course
-                                      )
-                                    }
-                                  }
-                                },
-                                [_vm._v("删除")]
-                              )
-                            ])
-                          ])
+                              ])
+                            : _vm._e()
                         }),
                         0
                       )
@@ -67665,7 +67730,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(14),
+                            _vm._m(15),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c("div", { staticClass: "row" }, [
@@ -67974,7 +68039,7 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md-8" }, [
-                                  _vm._m(15),
+                                  _vm._m(16),
                                   _vm._v(" "),
                                   _c(
                                     "ul",
@@ -68713,7 +68778,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(16),
+                      _vm._m(17),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -68826,7 +68891,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(17),
+                            _vm._m(18),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -68974,7 +69039,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(18),
+                      _vm._m(19),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69163,7 +69228,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(19),
+                            _vm._m(20),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -69449,7 +69514,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(20),
+                      _vm._m(21),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69562,7 +69627,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(21),
+                            _vm._m(22),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -69710,7 +69775,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(22),
+                      _vm._m(23),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69899,7 +69964,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(23),
+                            _vm._m(24),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -70264,6 +70329,25 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "row align-items-center m-auto",
+        staticStyle: { "min-height": "2rem" }
+      },
+      [
+        _c("input", {
+          attrs: { type: "checkbox", id: "checkbox", checked: "" }
+        }),
+        _vm._v(" "),
+        _c("div", [_vm._v("保留本次选课信息")])
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -70977,103 +71061,112 @@ var render = function() {
                       _c(
                         "tbody",
                         _vm._l(_vm.selectable_courses, function(course) {
-                          return _c("tr", [
-                            _c("th", [_vm._v(_vm._s(course.id))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course.number))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course_type.name))]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course.name))]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _vm._v(
-                                _vm._s(
-                                  course.course.department
-                                    ? course.course.department.name
-                                    : ""
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(course.course.credit))]),
-                            _vm._v(" "),
-                            _c(
-                              "th",
-                              _vm._l(course.arrangements, function(
-                                arrangement
-                              ) {
-                                return _c("div", [
+                          return new Date(course.updated_at) >= _vm.finish_date
+                            ? _c("tr", [
+                                _c("th", [_vm._v(_vm._s(course.id))]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(course.course.number))
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(course.course_type.name))
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v(_vm._s(course.course.name))]),
+                                _vm._v(" "),
+                                _c("th", [
                                   _vm._v(
-                                    "\n                                        " +
-                                      _vm._s(arrangement.weeks) +
-                                      "周 星期" +
-                                      _vm._s(arrangement.sessions) +
-                                      "节 " +
-                                      _vm._s(
-                                        arrangement.classroom
-                                          ? arrangement.classroom.name
-                                          : "无教室"
-                                      ) +
-                                      "\n                                    "
+                                    _vm._s(
+                                      course.course.department
+                                        ? course.course.department.name
+                                        : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(_vm._s(course.course.credit))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  _vm._l(course.arrangements, function(
+                                    arrangement
+                                  ) {
+                                    return _c("div", [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(arrangement.weeks) +
+                                          "周 星期" +
+                                          _vm._s(arrangement.sessions) +
+                                          "节 " +
+                                          _vm._s(
+                                            arrangement.classroom
+                                              ? arrangement.classroom.name
+                                              : "无教室"
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ])
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(
+                                      course.teacher ? course.teacher.name : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _c(
+                                    "button",
+                                    {
+                                      class: [
+                                        "btn",
+                                        [
+                                          _vm.is_selected(course.id)
+                                            ? "btn-danger"
+                                            : "btn-success"
+                                        ]
+                                      ],
+                                      attrs: {
+                                        disabled:
+                                          _vm.toggling ||
+                                          course.course_type_id == 1
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggle_selected(course.id)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm.is_selected(course.id)
+                                              ? "删除"
+                                              : "选课"
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("th", [
+                                  _vm._v(
+                                    _vm._s(course.students.length) +
+                                      "/" +
+                                      _vm._s(course.max_num)
                                   )
                                 ])
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _c("th", [
-                              _vm._v(
-                                _vm._s(
-                                  course.teacher ? course.teacher.name : ""
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "button",
-                                {
-                                  class: [
-                                    "btn",
-                                    [
-                                      _vm.is_selected(course.id)
-                                        ? "btn-danger"
-                                        : "btn-success"
-                                    ]
-                                  ],
-                                  attrs: {
-                                    disabled:
-                                      _vm.toggling || course.course_type_id == 1
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggle_selected(course.id)
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                        " +
-                                      _vm._s(
-                                        _vm.is_selected(course.id)
-                                          ? "删除"
-                                          : "选课"
-                                      ) +
-                                      "\n                                    "
-                                  )
-                                ]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [
-                              _vm._v(
-                                _vm._s(course.students.length) +
-                                  "/" +
-                                  _vm._s(course.max_num)
-                              )
-                            ])
-                          ])
+                              ])
+                            : _vm._e()
                         }),
                         0
                       )
@@ -71096,9 +71189,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "card" }, [
-                _c("h5", { staticClass: "card-header" }, [
-                  _vm._v("按周查课表")
-                ]),
+                _c("h5", { staticClass: "card-header" }, [_vm._v("已选课程")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c(
@@ -71332,7 +71423,10 @@ var render = function() {
                                   ],
                                   attrs: {
                                     disabled:
-                                      _vm.toggling || course.course_type_id == 1
+                                      _vm.toggling ||
+                                      course.course_type_id == 1 ||
+                                      _vm.finish_date >=
+                                        new Date(course.updated_at)
                                   },
                                   on: {
                                     click: function($event) {

@@ -39,6 +39,13 @@
                    id="list-profile-list" data-toggle="list" href="#list-profile" role="tab"
                    aria-controls="profile">个人信息</a>
             </div>
+            <div class="mt-2 justify-content-center">
+                <button class="btn btn-primary w-100 btn-lg" style="font-size: 1rem" @click="finish">本次选课完成，开始下次选课</button>
+                <div class="row align-items-center m-auto" style="min-height: 2rem;">
+                    <input type="checkbox" id="checkbox" checked>
+                    <div>保留本次选课信息</div>
+                </div>
+            </div>
         </div>
         <div class="col-10">
             <div class="tab-content" id="nav-tabContent">
@@ -556,7 +563,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="course in selectable_courses">
+                                <tr v-for="course in selectable_courses" v-if="new Date(course.updated_at) >=  finish_date">
                                     <th>{{ course.id }}</th>
                                     <th>{{ course.course.number }}</th>
                                     <th>{{ course.course_type.name }}</th>
@@ -1174,7 +1181,8 @@
                 new_arrangement_session_end: 0,
                 new_arrangement_classroom_id: 0,
                 sub_tab: 'list-tab-building',
-                modify_mode: true
+                modify_mode: true,
+                finish_date: new Date()
             }
         },
         mounted() {
@@ -1188,6 +1196,7 @@
             this.update_buildings()
             this.update_classrooms()
             this.update_course_types()
+            this.get_finish()
             $('#list-tab>.list-group-item').on('click', ()=> {
                 $('#collapseOne').collapse('hide')
             })
@@ -2055,6 +2064,24 @@
                     }
                 })
             },
+            finish() {
+                this.axios.post('/api/finish', {
+                    api_token: $('#api_token').val(),
+                    leave_data: $('#checkbox').prop('checked')
+                }).then(res => {
+                    console.log(res)
+                    this.get_finish()
+                })
+            },
+            get_finish() {
+                this.axios.get('/api/finish', {
+                    params: {
+                        api_token: $('#api_token').val(),
+                    }
+                }).then(res => {
+                    this.finish_date = new Date(res.data)
+                })
+            }
         }
     }
 </script>

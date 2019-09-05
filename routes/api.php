@@ -52,3 +52,5 @@ Route::resource('/majors', 'MajorsController');
 Route::resource('/departments', 'DepartmentsController');
 Route::resource('/classrooms', 'ClassroomsController');
 Route::resource('/course_types', 'CourseTypesController');
+Route::get('finish', 'FinishController@get');
+Route::post('finish', 'FinishController@finish');

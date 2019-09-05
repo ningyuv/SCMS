@@ -9,8 +9,10 @@ use App\CourseType;
 use App\Department;
 use App\Major;
 use App\Semester;
+use App\Setting;
 use App\Student;
 use App\Teacher;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -76,5 +78,8 @@ class DatabaseSeeder extends Seeder
             } catch (Exception $exception) {}
         }
         factory(App\Admin::class)->create();
+        Setting::create([
+            'last_finished_at' => Carbon::yesterday()
+        ]);
     }
 }
