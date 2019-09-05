@@ -11,9 +11,6 @@
                 <a class="list-group-item list-group-item-action"
                    id="list-messages-list" data-toggle="list" href="#list-messages" role="tab"
                    aria-controls="messages">个人信息</a>
-                <a class="list-group-item list-group-item-action"
-                   id="list-settings-list" data-toggle="list" href="#list-settings" role="tab"
-                   aria-controls="settings">选课记录</a>
             </div>
         </div>
         <div class="col-10">
@@ -76,7 +73,7 @@
                                     <th>{{ course.course.credit }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }} weeks {{ arrangement.sessions }} {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
                                         </div>
                                     </th>
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
@@ -177,7 +174,7 @@
                                     <th>{{ course.course.credit }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }} weeks {{ arrangement.sessions }} {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
                                         </div>
                                     </th>
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
@@ -378,13 +375,13 @@
                 })
             },
             is_selected(course_id) {
-                return this.user.selectable_courses.some(it => it.id === course_id)
+                return this.user.selectable_courses.some(it => it.id == course_id)
             },
             toggle_selected(course_id) {
                 this.toggling = true
                 if (this.is_selected(course_id)) {
                     this.axios.delete(`/api/course_student/${this.course_student.filter(
-                        it => it.student_id === this.user.id && it.selectable_course_id === course_id
+                        it => it.student_id == this.user.id && it.selectable_course_id == course_id
                     )[0].id}`, {
                         data: {
                             api_token: $('#api_token').val()

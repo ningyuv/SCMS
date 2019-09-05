@@ -1,10 +1,10 @@
-@extends('layouts.base')
+@extends('layouts.app')
 @section('content')
 
     <link rel="stylesheet" href="css/login_form_style.css">
     <link rel="stylesheet" href="css/main_page.css">
     <!-- Main Wrapper Start -->
-    <div class="main-wrapper">
+    <div class="main-wrapper" style="margin-top: -6rem">
 
         <!-- Header-area start -->
         <header class="header header-sticky">
@@ -12,22 +12,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4">
-                            <!-- logo Start -->
-                            <div class="logo">
-                                <a href="index.html"><img src="images/logo/logo.png" alt=""></a>
-                            </div><!--// logo End -->
                         </div>
                         <div class="col-lg-8">
-                            <!-- main-menu-area Start -->
-                            <div class="main-menu">
-                                <nav class="main-navigation">
-                                    <ul>
-                                        <li><a href="{{url('home')}}">Home</a></li>
-                                        <li><a href="#">ABOUT</a></li>
-                                        <li><a href="#">CONTACT</a></li>
-                                    </ul>
-                                </nav>
-                            </div><!--// main-menu-area End -->
                         </div>
                         <div class="col">
                             <!-- mobile-menu start -->

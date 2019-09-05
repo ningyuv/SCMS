@@ -5,9 +5,6 @@
                 <a class="list-group-item list-group-item-action active"
                    id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">教学安排</a>
                 <a class="list-group-item list-group-item-action"
-                   id="list-profile-list" data-toggle="list" href="#list-profile" role="tab"
-                   aria-controls="profile">成绩登记</a>
-                <a class="list-group-item list-group-item-action"
                    id="list-messages-list" data-toggle="list" href="#list-messages" role="tab"
                    aria-controls="messages">个人信息</a>
             </div>
@@ -95,7 +92,7 @@
                                     <th>{{ course.course.credit }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }} weeks {{ arrangement.sessions }} {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
                                         </div>
                                     </th>
                                 </tr>

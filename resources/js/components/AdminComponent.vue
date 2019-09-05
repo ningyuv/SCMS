@@ -281,7 +281,7 @@
                                 <tr v-for="(teacher, index) in teachers">
                                     <th>{{ teacher.number }}</th>
                                     <th>{{ teacher.name }}</th>
-                                    <th>{{ teacher.gender===1?'男':'女' }}</th>
+                                    <th>{{ teacher.gender==1?'男':'女' }}</th>
                                     <th>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#teacherModel"
                                                 @click="change_current_teacher(index)">修改</button>
@@ -561,7 +561,7 @@
                                     <th>{{ course.course.name }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }} weeks {{ arrangement.sessions }} {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{ arrangement.classroom?arrangement.classroom.name:'' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{ arrangement.classroom?arrangement.classroom.name:'' }}
                                         </div>
                                     </th>
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
@@ -627,13 +627,13 @@
                                                     </div>
                                                     <ul class="list-group text-center">
                                                         <li class="list-group-item row" v-for="arrangement in current_selectable_course.arrangements">
-                                                            <span v-if="current_arrangement_id===arrangement.id">
+                                                            <span v-if="current_arrangement_id==arrangement.id">
                                                                 <input type="text" v-model:value="current_arrangement_week_start" style="width: 2rem">
                                                                 -
                                                                 <input type="text" v-model:value="current_arrangement_week_end" style="width: 2rem">
                                                             </span>
-                                                            <span v-else>{{ arrangement.weeks }}</span> 周
-                                                            <span v-if="current_arrangement_id===arrangement.id">
+                                                            <span v-else>{{ arrangement.weeks }}</span>周
+                                                            <span v-if="current_arrangement_id==arrangement.id">
                                                                 星期
                                                                 <input type="text" v-model:value="current_arrangement_day" style="width: 2rem">
                                                                 第
@@ -642,9 +642,9 @@
                                                                 <input type="text" v-model:value="current_arrangement_session_end" style="width: 2rem">
                                                                 节
                                                             </span>
-                                                            <span v-else>{{ arrangement.sessions }}</span>
+                                                            <span v-else>星期{{ arrangement.sessions }}节</span>
 
-                                                            <select v-if="current_arrangement_id===arrangement.id" name="classroom_id" v-model:value="current_arrangement_classroom_id" class="form-control col-md-5 d-inline">
+                                                            <select v-if="current_arrangement_id==arrangement.id" name="classroom_id" v-model:value="current_arrangement_classroom_id" class="form-control col-md-5 d-inline">
                                                                 <option value="0">--选择教室--</option>
                                                                 <option :value="classroom.id" v-for="classroom in classrooms">{{ classroom.building.name }} {{ classroom.name }}</option>
                                                             </select>
@@ -652,7 +652,7 @@
                                                             <button class="btn btn-danger btn-sm col-md-1 float-right" @click="delete_arrangement(arrangement.id)">删除</button>
                                                             <button class="btn btn-primary btn-sm col-md-1 float-right mr-2"
                                                                     @click="change_editing_index_or_update(arrangement)">
-                                                                {{current_arrangement_id===arrangement.id?'保存':'编辑'}}
+                                                                {{current_arrangement_id==arrangement.id?'保存':'编辑'}}
                                                             </button>
                                                         </li>
                                                         <li class="list-group-item row">
@@ -721,12 +721,12 @@
                                 <tbody>
                                 <tr v-for="building in buildings">
                                     <th>{{ building.id }}</th>
-                                    <th v-if="current_building.id===building.id">
+                                    <th v-if="current_building.id==building.id">
                                         <input type="text" class="form-control text-center" v-model:value="current_building.name">
                                     </th>
                                     <th v-else>{{ building.name }}</th>
                                     <th>
-                                        <button class="btn btn-primary" @click="update_building_info()" v-if="current_building.id===building.id">保存</button>
+                                        <button class="btn btn-primary" @click="update_building_info()" v-if="current_building.id==building.id">保存</button>
                                         <button class="btn btn-primary" @click="change_current_building(building)" v-else>修改</button>
                                     </th>
                                     <th>
@@ -801,11 +801,11 @@
                                 <tbody>
                                 <tr v-for="classroom in classrooms">
                                     <th>{{ classroom.id }}</th>
-                                    <th v-if="current_classroom.id===classroom.id">
+                                    <th v-if="current_classroom.id==classroom.id">
                                         <input type="text" class="form-control text-center" v-model:value="current_classroom.name">
                                     </th>
                                     <th v-else>{{ classroom.name }}</th>
-                                    <th v-if="current_classroom.id===classroom.id">
+                                    <th v-if="current_classroom.id==classroom.id">
                                         <select name="building_id" v-model:value="current_classroom.building_id" class="form-control">
                                             <option :value="building.id" v-for="building in buildings">{{ building.name }}</option>
                                         </select>
@@ -816,7 +816,7 @@
                                         </select>
                                     </th>
                                     <th>
-                                        <button class="btn btn-primary" @click="update_classroom_info()" v-if="current_classroom.id===classroom.id">保存</button>
+                                        <button class="btn btn-primary" @click="update_classroom_info()" v-if="current_classroom.id==classroom.id">保存</button>
                                         <button class="btn btn-primary" @click="change_current_classroom(classroom)" v-else>修改</button>
                                     </th>
                                     <th>
@@ -908,12 +908,12 @@
                                 <tbody>
                                 <tr v-for="department in departments">
                                     <th>{{ department.id }}</th>
-                                    <th v-if="current_department.id===department.id">
+                                    <th v-if="current_department.id==department.id">
                                         <input type="text" class="form-control text-center" v-model:value="current_department.name">
                                     </th>
                                     <th v-else>{{ department.name }}</th>
                                     <th>
-                                        <button class="btn btn-primary" @click="update_department_info()" v-if="current_department.id===department.id">保存</button>
+                                        <button class="btn btn-primary" @click="update_department_info()" v-if="current_department.id==department.id">保存</button>
                                         <button class="btn btn-primary" @click="change_current_department(department)" v-else>修改</button>
                                     </th>
                                     <th>
@@ -988,11 +988,11 @@
                                 <tbody>
                                 <tr v-for="major in majors">
                                     <th>{{ major.id }}</th>
-                                    <th v-if="current_major.id===major.id">
+                                    <th v-if="current_major.id==major.id">
                                         <input type="text" class="form-control text-center" v-model:value="current_major.name">
                                     </th>
                                     <th v-else>{{ major.name }}</th>
-                                    <th v-if="current_major.id===major.id">
+                                    <th v-if="current_major.id==major.id">
                                         <select name="department_id" v-model:value="current_major.department_id" class="form-control">
                                             <option :value="department.id" v-for="department in departments">{{ department.name }}</option>
                                         </select>
@@ -1003,7 +1003,7 @@
                                         </select>
                                     </th>
                                     <th>
-                                        <button class="btn btn-primary" @click="update_major_info()" v-if="current_major.id===major.id">保存</button>
+                                        <button class="btn btn-primary" @click="update_major_info()" v-if="current_major.id==major.id">保存</button>
                                         <button class="btn btn-primary" @click="change_current_major(major)" v-else>修改</button>
                                     </th>
                                     <th>
@@ -1067,6 +1067,50 @@
                     <div class="card">
                         <h5 class="card-header">个人信息</h5>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="username"
+                                               class="col-md-3 col-form-label text-md-right">用户名</label>
+
+                                        <div class="col">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="number"
+                                                   v-model:value="user.username"
+                                                   autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="name" class="col-md-3 col-form-label text-md-right">邮箱</label>
+
+                                        <div class="col">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="name"
+                                                   v-model:value="user.email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="password"
+                                               class="col-md-3 col-form-label text-md-right">密码</label>
+
+                                        <div class="col">
+                                            <input type="text" placeholder="不更改"
+                                                   v-model:value="user.password"
+                                                   class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-primary form-control"
+                                            @click="update_user_info()">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -1082,6 +1126,7 @@
         name: "AdminComponent",
         data() {
             return {
+                user: {},
                 students: [],
                 current_student: {},
                 current_teacher: {},
@@ -1117,6 +1162,7 @@
             }
         },
         mounted() {
+            this.update_user()
             this.update_students()
             this.update_teachers()
             this.update_majors()
@@ -1130,6 +1176,30 @@
             })
         },
         methods: {
+            update_user() {
+                this.axios.get('/api/user/admin', {
+                    params: {
+                        api_token: $('#api_token').val()
+                    }
+                }).then(res => {
+                    this.user = res.data
+                })
+            },
+            update_user_info() {
+                if (this.user.password) {
+                    this.user.password = bcrypt.hashSync(this.user.password)
+                }
+                this.axios.patch(`/api/admins/${this.user.id}`, {
+                    api_token: $('#api_token').val(),
+                    username: this.user.username,
+                    email: this.user.email,
+                    password: this.user.password
+                }).then(res => {
+                    this.update_user()
+                }).finally(res => {
+                    this.user.password=''
+                })
+            },
             change_model_state(state) {
                 if (this.modify_mode) {
                     this.current_student = {
@@ -1300,7 +1370,7 @@
                     this.selectable_courses = res.data
                     if (this.current_selectable_course_id!==0) {
                         this.current_selectable_course = this.selectable_courses
-                            .filter(it => it.id === this.current_selectable_course_id)[0]
+                            .filter(it => it.id == this.current_selectable_course_id)[0]
                         if (!this.current_selectable_course) {
                             this.current_selectable_course_id = 0;
                             this.current_selectable_course = {}

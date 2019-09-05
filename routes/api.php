@@ -34,11 +34,15 @@ Route::middleware('auth:api-teacher')->get('/user/teacher', function (Request $r
         'selectable_courses.arrangements.classroom.building'
     )->where('id', $request->user()->id)->first();
 });
+Route::middleware('auth:api-admin')->get('/user/admin', function (Request $request) {
+    return $request->user();
+});
 
 Route::resource('/course_student', 'CourseStudentController');
 Route::resource('/selectable_course', 'SelectableCourseController');
 Route::resource('/students', 'StudentsController');
 Route::resource('/teachers', 'TeachersController');
+Route::resource('/admins', 'AdminsController');
 Route::resource('/courses', 'CoursesController');
 Route::resource('/arrangements', 'ArrangementsController');
 Route::resource('/buildings', 'BuildingsController');

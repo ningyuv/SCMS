@@ -57,8 +57,8 @@ class AddConstraints extends Migration
             $table->foreign('course_id')
                 ->references('id')
                 ->on('courses')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('no action')
+                ->onDelete('no action');
             $table->foreign('teacher_id')
                 ->references('id')
                 ->on('teachers')

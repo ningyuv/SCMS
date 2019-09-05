@@ -4807,11 +4807,56 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminComponent",
   data: function data() {
     return {
+      user: {},
       students: [],
       current_student: {},
       current_teacher: {},
@@ -4847,6 +4892,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   mounted: function mounted() {
+    this.update_user();
     this.update_students();
     this.update_teachers();
     this.update_majors();
@@ -4860,6 +4906,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     });
   },
   methods: {
+    update_user: function update_user() {
+      var _this = this;
+
+      this.axios.get('/api/user/admin', {
+        params: {
+          api_token: $('#api_token').val()
+        }
+      }).then(function (res) {
+        _this.user = res.data;
+      });
+    },
+    update_user_info: function update_user_info() {
+      var _this2 = this;
+
+      if (this.user.password) {
+        this.user.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.user.password);
+      }
+
+      this.axios.patch("/api/admins/".concat(this.user.id), {
+        api_token: $('#api_token').val(),
+        username: this.user.username,
+        email: this.user.email,
+        password: this.user.password
+      }).then(function (res) {
+        _this2.update_user();
+      })["finally"](function (res) {
+        _this2.user.password = '';
+      });
+    },
     change_model_state: function change_model_state(state) {
       if (this.modify_mode) {
         this.current_student = {
@@ -4881,14 +4956,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.modify_mode = state;
     },
     update_departments: function update_departments() {
-      var _this = this;
+      var _this3 = this;
 
       this.axios.get('/api/departments', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this.departments = res.data;
+        _this3.departments = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -4925,14 +5000,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_majors: function update_majors() {
-      var _this2 = this;
+      var _this4 = this;
 
       this.axios.get('/api/majors', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this2.majors = res.data;
+        _this4.majors = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -4969,14 +5044,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_buildings: function update_buildings() {
-      var _this3 = this;
+      var _this5 = this;
 
       this.axios.get('/api/buildings', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this3.buildings = res.data;
+        _this5.buildings = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5013,14 +5088,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_classrooms: function update_classrooms() {
-      var _this4 = this;
+      var _this6 = this;
 
       this.axios.get('/api/classrooms', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this4.classrooms = res.data;
+        _this6.classrooms = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5057,7 +5132,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_students: function update_students() {
-      var _this5 = this;
+      var _this7 = this;
 
       this.axios.get('/api/students', {
         params: {
@@ -5067,7 +5142,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           number: $('#student_number').val()
         }
       }).then(function (res) {
-        _this5.students = res.data;
+        _this7.students = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5104,7 +5179,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_teachers: function update_teachers() {
-      var _this6 = this;
+      var _this8 = this;
 
       this.axios.get('/api/teachers', {
         params: {
@@ -5114,7 +5189,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           number: $('#teacher_number').val()
         }
       }).then(function (res) {
-        _this6.teachers = res.data;
+        _this8.teachers = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5151,14 +5226,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_courses: function update_courses() {
-      var _this7 = this;
+      var _this9 = this;
 
       this.axios.get('/api/courses', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this7.courses = res.data;
+        _this9.courses = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5195,7 +5270,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_selectable_courses: function update_selectable_courses() {
-      var _this8 = this;
+      var _this10 = this;
 
       this.axios.get('/api/selectable_course', {
         params: {
@@ -5205,16 +5280,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           course_number: $('#course_number').val()
         }
       }).then(function (res) {
-        _this8.selectable_courses = res.data;
+        _this10.selectable_courses = res.data;
 
-        if (_this8.current_selectable_course_id !== 0) {
-          _this8.current_selectable_course = _this8.selectable_courses.filter(function (it) {
-            return it.id === _this8.current_selectable_course_id;
+        if (_this10.current_selectable_course_id !== 0) {
+          _this10.current_selectable_course = _this10.selectable_courses.filter(function (it) {
+            return it.id == _this10.current_selectable_course_id;
           })[0];
 
-          if (!_this8.current_selectable_course) {
-            _this8.current_selectable_course_id = 0;
-            _this8.current_selectable_course = {};
+          if (!_this10.current_selectable_course) {
+            _this10.current_selectable_course_id = 0;
+            _this10.current_selectable_course = {};
           }
         }
       })["catch"](function (res) {
@@ -5257,7 +5332,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_student = JSON.parse(JSON.stringify(this.students[index]));
     },
     update_student_info: function update_student_info() {
-      var _this9 = this;
+      var _this11 = this;
 
       if (this.current_student.password) {
         this.current_student.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.current_student.password);
@@ -5268,7 +5343,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           student: this.current_student
         }).then(function (res) {
-          _this9.update_students();
+          _this11.update_students();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5310,7 +5385,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           student: this.current_student
         }).then(function (res) {
-          _this9.update_students();
+          _this11.update_students();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5347,7 +5422,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             alert(str);
           }
         })["finally"](function (res) {
-          _this9.current_student.password = '';
+          _this11.current_student.password = '';
         });
       }
     },
@@ -5356,7 +5431,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_teacher = JSON.parse(JSON.stringify(this.teachers[index]));
     },
     update_teacher_info: function update_teacher_info() {
-      var _this10 = this;
+      var _this12 = this;
 
       if (this.current_teacher.password) {
         this.current_teacher.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.current_teacher.password);
@@ -5367,7 +5442,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           teacher: this.current_teacher
         }).then(function (res) {
-          _this10.update_teachers();
+          _this12.update_teachers();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5409,7 +5484,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           teacher: this.current_teacher
         }).then(function (res) {
-          _this10.update_teachers();
+          _this12.update_teachers();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5446,7 +5521,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             alert(str);
           }
         })["finally"](function (res) {
-          _this10.current_teacher.password = '';
+          _this12.current_teacher.password = '';
         });
       }
     },
@@ -5455,14 +5530,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_course = JSON.parse(JSON.stringify(this.courses[index]));
     },
     update_course_info: function update_course_info() {
-      var _this11 = this;
+      var _this13 = this;
 
       if (this.modify_mode) {
         this.axios.patch("/api/courses/".concat(this.current_course.id), {
           api_token: $('#api_token').val(),
           course: this.current_course
         }).then(function (res) {
-          _this11.update_courses();
+          _this13.update_courses();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5504,7 +5579,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           course: this.current_course
         }).then(function (res) {
-          _this11.update_courses();
+          _this13.update_courses();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5549,14 +5624,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_selectable_course_id = course.id;
     },
     update_selectable_course_info: function update_selectable_course_info() {
-      var _this12 = this;
+      var _this14 = this;
 
       if (this.modify_mode) {
         this.axios.patch("/api/selectable_course/".concat(this.current_selectable_course.id), {
           api_token: $('#api_token').val(),
           selectable_course: this.current_selectable_course
         }).then(function (res) {
-          _this12.update_selectable_courses();
+          _this14.update_selectable_courses();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5598,7 +5673,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           selectable_course: this.current_selectable_course
         }).then(function (res) {
-          _this12.update_selectable_courses();
+          _this14.update_selectable_courses();
 
           $('.modal').modal('hide');
         })["catch"](function (res) {
@@ -5650,15 +5725,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_major = JSON.parse(JSON.stringify(major));
     },
     update_building_info: function update_building_info() {
-      var _this13 = this;
+      var _this15 = this;
 
       this.axios.patch("/api/buildings/".concat(this.current_building.id), {
         api_token: $('#api_token').val(),
         name: this.current_building.name
       }).then(function (res) {
-        _this13.update_buildings();
+        _this15.update_buildings();
 
-        _this13.current_building = {};
+        _this15.current_building = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5695,16 +5770,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_classroom_info: function update_classroom_info() {
-      var _this14 = this;
+      var _this16 = this;
 
       this.axios.patch("/api/classrooms/".concat(this.current_classroom.id), {
         api_token: $('#api_token').val(),
         name: this.current_classroom.name,
         building_id: this.current_classroom.building_id
       }).then(function (res) {
-        _this14.update_classrooms();
+        _this16.update_classrooms();
 
-        _this14.current_classroom = {};
+        _this16.current_classroom = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5741,15 +5816,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_department_info: function update_department_info() {
-      var _this15 = this;
+      var _this17 = this;
 
       this.axios.patch("/api/departments/".concat(this.current_department.id), {
         api_token: $('#api_token').val(),
         name: this.current_department.name
       }).then(function (res) {
-        _this15.update_departments();
+        _this17.update_departments();
 
-        _this15.current_department = {};
+        _this17.current_department = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5786,16 +5861,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     update_major_info: function update_major_info() {
-      var _this16 = this;
+      var _this18 = this;
 
       this.axios.patch("/api/majors/".concat(this.current_major.id), {
         api_token: $('#api_token').val(),
         name: this.current_major.name,
         department_id: this.current_major.department_id
       }).then(function (res) {
-        _this16.update_majors();
+        _this18.update_majors();
 
-        _this16.current_major = {};
+        _this18.current_major = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5832,18 +5907,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_building: function delete_building(building) {
-      var _this17 = this;
+      var _this19 = this;
 
       this.axios["delete"]("/api/buildings/".concat(building.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this17.update_buildings();
+        _this19.update_buildings();
 
-        _this17.update_classrooms();
+        _this19.update_classrooms();
 
-        _this17.update_selectable_courses();
+        _this19.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5880,16 +5955,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_classroom: function delete_classroom(classroom) {
-      var _this18 = this;
+      var _this20 = this;
 
       this.axios["delete"]("/api/classrooms/".concat(classroom.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this18.update_classrooms();
+        _this20.update_classrooms();
 
-        _this18.update_selectable_courses();
+        _this20.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5926,18 +6001,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_department: function delete_department(department) {
-      var _this19 = this;
+      var _this21 = this;
 
       this.axios["delete"]("/api/departments/".concat(department.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this19.update_departments();
+        _this21.update_departments();
 
-        _this19.update_majors();
+        _this21.update_majors();
 
-        _this19.update_selectable_courses();
+        _this21.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5974,16 +6049,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_major: function delete_major(major) {
-      var _this20 = this;
+      var _this22 = this;
 
       this.axios["delete"]("/api/majors/".concat(major.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this20.update_majors();
+        _this22.update_majors();
 
-        _this20.update_selectable_courses();
+        _this22.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6020,16 +6095,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_student: function delete_student(student_id) {
-      var _this21 = this;
+      var _this23 = this;
 
       this.axios["delete"]("/api/students/".concat(student_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this21.update_students();
+        _this23.update_students();
 
-        _this21.update_selectable_courses();
+        _this23.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6066,16 +6141,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_teacher: function delete_teacher(teacher_id) {
-      var _this22 = this;
+      var _this24 = this;
 
       this.axios["delete"]("/api/teachers/".concat(teacher_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this22.update_teachers();
+        _this24.update_teachers();
 
-        _this22.update_selectable_courses();
+        _this24.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6112,16 +6187,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_course: function delete_course(course_id) {
-      var _this23 = this;
+      var _this25 = this;
 
       this.axios["delete"]("/api/courses/".concat(course_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this23.update_courses();
+        _this25.update_courses();
 
-        _this23.update_selectable_courses();
+        _this25.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6158,7 +6233,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     change_editing_index_or_update: function change_editing_index_or_update(arrangement) {
-      var _this24 = this;
+      var _this26 = this;
 
       if (this.current_arrangement_id !== arrangement.id) {
         this.current_arrangement_id = arrangement.id;
@@ -6193,12 +6268,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           weeks: "".concat(this.current_arrangement_week_start, "-").concat(this.current_arrangement_week_end),
           sessions: "".concat(this.current_arrangement_day, ":").concat(this.current_arrangement_session_start, "-").concat(this.current_arrangement_session_end)
         }).then(function (res) {
-          _this24.update_selectable_courses();
+          _this26.update_selectable_courses();
 
           if (!res.data.success) {
             alert(res.data.message);
           } else {
-            _this24.current_arrangement_id = 0;
+            _this26.current_arrangement_id = 0;
           }
         })["catch"](function (res) {
           if (res.response && res.response.data && res.data.errors) {
@@ -6237,16 +6312,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     delete_arrangement: function delete_arrangement(arrangement_id) {
-      var _this25 = this;
+      var _this27 = this;
 
       this.axios["delete"]("/api/arrangements/".concat(arrangement_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this25.update_selectable_courses();
+        _this27.update_selectable_courses();
 
-        _this25.current_arrangement_id = 0;
+        _this27.current_arrangement_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6283,16 +6358,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     delete_selectable_course: function delete_selectable_course(selectable_course) {
-      var _this26 = this;
+      var _this28 = this;
 
       this.axios["delete"]("/api/selectable_course/".concat(selectable_course.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this26.update_selectable_courses();
+        _this28.update_selectable_courses();
 
-        _this26.current_selectable_course_id = 0;
+        _this28.current_selectable_course_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6329,7 +6404,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     add_arrangement: function add_arrangement() {
-      var _this27 = this;
+      var _this29 = this;
 
       this.axios.post("/api/arrangements/", {
         api_token: $('#api_token').val(),
@@ -6338,17 +6413,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         weeks: "".concat(this.new_arrangement_week_start, "-").concat(this.new_arrangement_week_end),
         sessions: "".concat(this.new_arrangement_day, ":").concat(this.new_arrangement_session_start, "-").concat(this.new_arrangement_session_end)
       }).then(function (res) {
-        _this27.update_selectable_courses();
+        _this29.update_selectable_courses();
 
         if (!res.data.success) {
           alert(res.data.message);
         } else {
-          _this27.new_arrangement_week_start = 0;
-          _this27.new_arrangement_week_end = 0;
-          _this27.new_arrangement_day = 0;
-          _this27.new_arrangement_session_start = 0;
-          _this27.new_arrangement_session_end = 0;
-          _this27.new_arrangement_classroom_id = 0;
+          _this29.new_arrangement_week_start = 0;
+          _this29.new_arrangement_week_end = 0;
+          _this29.new_arrangement_day = 0;
+          _this29.new_arrangement_session_start = 0;
+          _this29.new_arrangement_session_end = 0;
+          _this29.new_arrangement_classroom_id = 0;
         }
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
@@ -6386,13 +6461,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     add_building_info: function add_building_info() {
-      var _this28 = this;
+      var _this30 = this;
 
       this.axios.post("/api/buildings", {
         api_token: $('#api_token').val(),
         name: this.current_building.name
       }).then(function (res) {
-        _this28.update_buildings();
+        _this30.update_buildings();
 
         $('.modal').modal('hide');
       })["catch"](function (res) {
@@ -6431,7 +6506,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     add_classroom_info: function add_classroom_info() {
-      var _this29 = this;
+      var _this31 = this;
 
       this.axios.post("/api/classrooms", {
         api_token: $('#api_token').val(),
@@ -6439,7 +6514,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         number: this.current_classroom.number,
         building_id: this.current_classroom.building_id
       }).then(function (res) {
-        _this29.update_classrooms();
+        _this31.update_classrooms();
 
         $('.modal').modal('hide');
       })["catch"](function (res) {
@@ -6478,13 +6553,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     add_department_info: function add_department_info() {
-      var _this30 = this;
+      var _this32 = this;
 
       this.axios.post("/api/departments", {
         api_token: $('#api_token').val(),
         name: this.current_department.name
       }).then(function (res) {
-        _this30.update_departments();
+        _this32.update_departments();
 
         $('.modal').modal('hide');
       })["catch"](function (res) {
@@ -6523,14 +6598,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     add_major_info: function add_major_info() {
-      var _this31 = this;
+      var _this33 = this;
 
       this.axios.post("/api/majors", {
         api_token: $('#api_token').val(),
         name: this.current_major.name,
         department_id: this.current_major.department_id
       }).then(function (res) {
-        _this31.update_majors();
+        _this33.update_majors();
 
         $('.modal').modal('hide');
       })["catch"](function (res) {
@@ -6625,9 +6700,6 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
 //
 //
 //
@@ -7022,7 +7094,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     is_selected: function is_selected(course_id) {
       return this.user.selectable_courses.some(function (it) {
-        return it.id === course_id;
+        return it.id == course_id;
       });
     },
     toggle_selected: function toggle_selected(course_id) {
@@ -7032,7 +7104,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.is_selected(course_id)) {
         this.axios["delete"]("/api/course_student/".concat(this.course_student.filter(function (it) {
-          return it.student_id === _this6.user.id && it.selectable_course_id === course_id;
+          return it.student_id == _this6.user.id && it.selectable_course_id == course_id;
         })[0].id), {
           data: {
             api_token: $('#api_token').val()
@@ -7118,9 +7190,6 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
 //
 //
 //
@@ -66336,7 +66405,7 @@ var render = function() {
                             _c("th", [_vm._v(_vm._s(teacher.name))]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm._v(_vm._s(teacher.gender === 1 ? "男" : "女"))
+                              _vm._v(_vm._s(teacher.gender == 1 ? "男" : "女"))
                             ]),
                             _vm._v(" "),
                             _c("th", [
@@ -67298,9 +67367,9 @@ var render = function() {
                                   _vm._v(
                                     "\n                                        " +
                                       _vm._s(arrangement.weeks) +
-                                      " weeks " +
+                                      "周 星期" +
                                       _vm._s(arrangement.sessions) +
-                                      " " +
+                                      "节 " +
                                       _vm._s(
                                         arrangement.classroom
                                           ? arrangement.classroom.building.name
@@ -67639,7 +67708,7 @@ var render = function() {
                                               staticClass: "list-group-item row"
                                             },
                                             [
-                                              _vm.current_arrangement_id ===
+                                              _vm.current_arrangement_id ==
                                               arrangement.id
                                                 ? _c("span", [
                                                     _c("input", {
@@ -67724,9 +67793,9 @@ var render = function() {
                                                     )
                                                   ]),
                                               _vm._v(
-                                                " 周\n                                                        "
+                                                "周\n                                                        "
                                               ),
-                                              _vm.current_arrangement_id ===
+                                              _vm.current_arrangement_id ==
                                               arrangement.id
                                                 ? _c("span", [
                                                     _vm._v(
@@ -67852,13 +67921,15 @@ var render = function() {
                                                   ])
                                                 : _c("span", [
                                                     _vm._v(
-                                                      _vm._s(
-                                                        arrangement.sessions
-                                                      )
+                                                      "星期" +
+                                                        _vm._s(
+                                                          arrangement.sessions
+                                                        ) +
+                                                        "节"
                                                     )
                                                   ]),
                                               _vm._v(" "),
-                                              _vm.current_arrangement_id ===
+                                              _vm.current_arrangement_id ==
                                               arrangement.id
                                                 ? _c(
                                                     "select",
@@ -67997,7 +68068,7 @@ var render = function() {
                                                   _vm._v(
                                                     "\n                                                            " +
                                                       _vm._s(
-                                                        _vm.current_arrangement_id ===
+                                                        _vm.current_arrangement_id ==
                                                           arrangement.id
                                                           ? "保存"
                                                           : "编辑"
@@ -68368,7 +68439,7 @@ var render = function() {
                           return _c("tr", [
                             _c("th", [_vm._v(_vm._s(building.id))]),
                             _vm._v(" "),
-                            _vm.current_building.id === building.id
+                            _vm.current_building.id == building.id
                               ? _c("th", [
                                   _c("input", {
                                     directives: [
@@ -68402,7 +68473,7 @@ var render = function() {
                               : _c("th", [_vm._v(_vm._s(building.name))]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm.current_building.id === building.id
+                              _vm.current_building.id == building.id
                                 ? _c(
                                     "button",
                                     {
@@ -68629,7 +68700,7 @@ var render = function() {
                           return _c("tr", [
                             _c("th", [_vm._v(_vm._s(classroom.id))]),
                             _vm._v(" "),
-                            _vm.current_classroom.id === classroom.id
+                            _vm.current_classroom.id == classroom.id
                               ? _c("th", [
                                   _c("input", {
                                     directives: [
@@ -68662,7 +68733,7 @@ var render = function() {
                                 ])
                               : _c("th", [_vm._v(_vm._s(classroom.name))]),
                             _vm._v(" "),
-                            _vm.current_classroom.id === classroom.id
+                            _vm.current_classroom.id == classroom.id
                               ? _c("th", [
                                   _c(
                                     "select",
@@ -68739,7 +68810,7 @@ var render = function() {
                                 ]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm.current_classroom.id === classroom.id
+                              _vm.current_classroom.id == classroom.id
                                 ? _c(
                                     "button",
                                     {
@@ -69104,7 +69175,7 @@ var render = function() {
                           return _c("tr", [
                             _c("th", [_vm._v(_vm._s(department.id))]),
                             _vm._v(" "),
-                            _vm.current_department.id === department.id
+                            _vm.current_department.id == department.id
                               ? _c("th", [
                                   _c("input", {
                                     directives: [
@@ -69138,7 +69209,7 @@ var render = function() {
                               : _c("th", [_vm._v(_vm._s(department.name))]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm.current_department.id === department.id
+                              _vm.current_department.id == department.id
                                 ? _c(
                                     "button",
                                     {
@@ -69365,7 +69436,7 @@ var render = function() {
                           return _c("tr", [
                             _c("th", [_vm._v(_vm._s(major.id))]),
                             _vm._v(" "),
-                            _vm.current_major.id === major.id
+                            _vm.current_major.id == major.id
                               ? _c("th", [
                                   _c("input", {
                                     directives: [
@@ -69396,7 +69467,7 @@ var render = function() {
                                 ])
                               : _c("th", [_vm._v(_vm._s(major.name))]),
                             _vm._v(" "),
-                            _vm.current_major.id === major.id
+                            _vm.current_major.id == major.id
                               ? _c("th", [
                                   _c(
                                     "select",
@@ -69477,7 +69548,7 @@ var render = function() {
                                 ]),
                             _vm._v(" "),
                             _c("th", [
-                              _vm.current_major.id === major.id
+                              _vm.current_major.id == major.id
                                 ? _c(
                                     "button",
                                     {
@@ -69737,7 +69808,174 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(24)
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade",
+              attrs: {
+                id: "list-profile",
+                role: "tabpanel",
+                "aria-labelledby": "list-profile-list"
+              }
+            },
+            [
+              _c("div", { staticClass: "card" }, [
+                _c("h5", { staticClass: "card-header" }, [_vm._v("个人信息")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md-3 col-form-label text-md-right",
+                            attrs: { for: "username" }
+                          },
+                          [_vm._v("用户名")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model:value",
+                                value: _vm.user.username,
+                                expression: "user.username",
+                                arg: "value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "number",
+                              autofocus: ""
+                            },
+                            domProps: { value: _vm.user.username },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "username",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md-3 col-form-label text-md-right",
+                            attrs: { for: "name" }
+                          },
+                          [_vm._v("邮箱")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model:value",
+                                value: _vm.user.email,
+                                expression: "user.email",
+                                arg: "value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", name: "name" },
+                            domProps: { value: _vm.user.email },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.user, "email", $event.target.value)
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md-3 col-form-label text-md-right",
+                            attrs: { for: "password" }
+                          },
+                          [_vm._v("密码")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model:value",
+                                value: _vm.user.password,
+                                expression: "user.password",
+                                arg: "value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "不更改",
+                              required: ""
+                            },
+                            domProps: { value: _vm.user.password },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "password",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c("div", { staticClass: "col-md-5" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary form-control",
+                              on: {
+                                click: function($event) {
+                                  return _vm.update_user_info()
+                                }
+                              }
+                            },
+                            [_vm._v("保存")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ]
+          )
         ]
       )
     ])
@@ -70219,29 +70457,6 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "tab-pane fade",
-        attrs: {
-          id: "list-profile",
-          role: "tabpanel",
-          "aria-labelledby": "list-profile-list"
-        }
-      },
-      [
-        _c("div", { staticClass: "card" }, [
-          _c("h5", { staticClass: "card-header" }, [_vm._v("个人信息")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" })
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -70448,9 +70663,9 @@ var render = function() {
                                   _vm._v(
                                     "\n                                        " +
                                       _vm._s(arrangement.weeks) +
-                                      " weeks " +
+                                      "周 星期" +
                                       _vm._s(arrangement.sessions) +
-                                      " " +
+                                      "节 " +
                                       _vm._s(
                                         arrangement.classroom
                                           ? arrangement.classroom.name
@@ -70736,9 +70951,9 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(arrangement.weeks) +
-                                          " weeks " +
+                                          "周 星期" +
                                           _vm._s(arrangement.sessions) +
-                                          " " +
+                                          "节 " +
                                           _vm._s(
                                             arrangement.classroom
                                               ? arrangement.classroom.name
@@ -71136,21 +71351,6 @@ var staticRenderFns = [
               }
             },
             [_vm._v("个人信息")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "list-group-item list-group-item-action",
-              attrs: {
-                id: "list-settings-list",
-                "data-toggle": "list",
-                href: "#list-settings",
-                role: "tab",
-                "aria-controls": "settings"
-              }
-            },
-            [_vm._v("选课记录")]
           )
         ]
       )
@@ -71528,9 +71728,9 @@ var render = function() {
                                   _vm._v(
                                     "\n                                        " +
                                       _vm._s(arrangement.weeks) +
-                                      " weeks " +
+                                      "周 星期" +
                                       _vm._s(arrangement.sessions) +
-                                      " " +
+                                      "节 " +
                                       _vm._s(
                                         arrangement.classroom
                                           ? arrangement.classroom.name
@@ -71874,21 +72074,6 @@ var staticRenderFns = [
               }
             },
             [_vm._v("教学安排")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "list-group-item list-group-item-action",
-              attrs: {
-                id: "list-profile-list",
-                "data-toggle": "list",
-                href: "#list-profile",
-                role: "tab",
-                "aria-controls": "profile"
-              }
-            },
-            [_vm._v("成绩登记")]
           ),
           _vm._v(" "),
           _c(
