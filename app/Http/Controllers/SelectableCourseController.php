@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\CourseStudent;
 use App\CourseType;
 use App\SelectableCourse;
@@ -42,6 +43,11 @@ class SelectableCourseController extends Controller
             ->whereHas('course', function ($query) {
                 $query->where('number', 'like', '%' . \request()->course_number . '%');
             });
+        if (\request()->classes_id && \request()->classes_id != 0) {
+            $builder = $builder->where(function ($query) {
+                $query->where('classes_id', \request()->classes_id)->orWhere('course_type_id', 3);
+            });
+        }
         if (\request()->department_id && \request()->department_id != 0) {
             $builder = $builder
                 ->whereHas('course', function ($query) {
@@ -71,7 +77,7 @@ class SelectableCourseController extends Controller
     {
         $course = SelectableCourse::create($request->selectable_course);
         if ($request->selectable_course['course_type_id'] == 1) {
-            foreach (Student::all() as $student) {
+            foreach (Student::where('classes_id', $course->classes_id)->get() as $student) {
                 CourseStudent::create([
                     'student_id' => $student->id,
                     'selectable_course_id' => $course->id
@@ -115,7 +121,7 @@ class SelectableCourseController extends Controller
     public function update(Request $request, SelectableCourse $selectableCourse)
     {
         $course_saving = clone $selectableCourse;
-        foreach (CourseType::first()->selectable_courses as $that_course) {
+        foreach (CourseType::first()->selectable_courses->where('classes_id', $request->selectable_course['classes_id']) as $that_course) {
             foreach ($that_course->arrangements as $arrangement1) {
                 foreach ($course_saving->arrangements as $arrangement2) {
                     if ($course_saving->id != $that_course->id && arrangement_conflict($arrangement1, $arrangement2)) {
@@ -128,12 +134,23 @@ class SelectableCourseController extends Controller
             }
         }
         if ($request->selectable_course['course_type_id'] == 1) {
-            foreach (Student::all() as $student) {
+            foreach (Student::where('classes_id', $request->selectable_course['classes_id'])->get() as $student) {
                 if (!$student->selectable_courses->contains('id', $selectableCourse->id)) {
                     CourseStudent::create([
                         'student_id' => $student->id,
                         'selectable_course_id' => $selectableCourse->id
                     ]);
+                }
+            }
+        }
+        if ($request->selectable_course['course_type_id'] == 1 || $request->selectable_course['course_type_id'] == 2) {
+            foreach (Student::where('classes_id', $course_saving->classes_id)->get() as $student) {
+                $course_student = CourseStudent::where([
+                    'student_id' => $student->id,
+                    'selectable_course_id' => $course_saving->id,
+                ]);
+                if ($course_student) {
+                    $course_student->delete();
                 }
             }
         }

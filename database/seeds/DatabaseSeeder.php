@@ -9,7 +9,6 @@ use App\CourseStudent;
 use App\CourseType;
 use App\Department;
 use App\Major;
-use App\Semester;
 use App\Setting;
 use App\Student;
 use App\Teacher;
@@ -75,7 +74,7 @@ class DatabaseSeeder extends Seeder
             factory(Student::class)->create();
         }
         foreach (CourseType::first()->selectable_courses as $course) {
-            foreach (Student::all() as $student) {
+            foreach (Student::where('classes_id', $course->classes_id)->get() as $student) {
                 CourseStudent::create([
                     'student_id' => $student->id,
                     'selectable_course_id' => $course->id,

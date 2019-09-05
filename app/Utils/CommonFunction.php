@@ -5,13 +5,16 @@ use App\CourseType;
 use App\SelectableCourse;
 use App\Teacher;
 
-function random_item($class, $strict=false){
+function random_item($class, $strict=false, $classes_id=0){
     $size = models_size($class);
     $instance = $class::find(random_int(1, $size));
     if ($strict) {
         $instance = $class::all()->random();
+        if ($class == SelectableCourse::class) {
+            $instance = $class::where('classes_id', $classes_id)->get()->random();
+        }
         if ($class == CourseType::class) {
-            if (CourseType::first()->selectable_courses->count()>2) {
+            if (CourseType::first()->selectable_courses->where('classes_id', $classes_id)->count()>2) {
                 $instance = CourseType::find(random_int(2,3));
             }
         }
@@ -421,17 +424,17 @@ function classrooms_array() {
 }
 function classes_array() {
     return [
-        ['name' => '1701班', 'number' => '1701'],
-        ['name' => '1702班', 'number' => '1702'],
-        ['name' => '1703班', 'number' => '1703'],
-        ['name' => '1704班', 'number' => '1704'],
-        ['name' => '1801班', 'number' => '1801'],
-        ['name' => '1802班', 'number' => '1802'],
-        ['name' => '1803班', 'number' => '1803'],
-        ['name' => '1804班', 'number' => '1804'],
-        ['name' => '1901班', 'number' => '1901'],
-        ['name' => '1902班', 'number' => '1902'],
-        ['name' => '1903班', 'number' => '1903'],
-        ['name' => '1904班', 'number' => '1904'],
+        ['name' => '1701班', 'number' => '1701', 'year' => 2017],
+        ['name' => '1702班', 'number' => '1702', 'year' => 2017],
+        ['name' => '1703班', 'number' => '1703', 'year' => 2017],
+        ['name' => '1704班', 'number' => '1704', 'year' => 2017],
+        ['name' => '1801班', 'number' => '1801', 'year' => 2018],
+        ['name' => '1802班', 'number' => '1802', 'year' => 2018],
+        ['name' => '1803班', 'number' => '1803', 'year' => 2018],
+        ['name' => '1804班', 'number' => '1804', 'year' => 2018],
+        ['name' => '1901班', 'number' => '1901', 'year' => 2019],
+        ['name' => '1902班', 'number' => '1902', 'year' => 2019],
+        ['name' => '1903班', 'number' => '1903', 'year' => 2019],
+        ['name' => '1904班', 'number' => '1904', 'year' => 2019],
     ];
 }

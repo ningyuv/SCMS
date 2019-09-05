@@ -4873,6 +4873,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminComponent",
@@ -4897,6 +4911,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       course_types: [],
       departments: [],
       classrooms: [],
+      classess: [],
       current_arrangement_id: 0,
       current_arrangement_week_start: 0,
       current_arrangement_week_end: 0,
@@ -4927,6 +4942,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.update_classrooms();
     this.update_course_types();
     this.get_finish();
+    this.update_classes();
     $('#list-tab>.list-group-item').on('click', function () {
       $('#collapseOne').collapse('hide');
     });
@@ -5076,15 +5092,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_buildings: function update_buildings() {
+    update_classes: function update_classes() {
       var _this6 = this;
 
-      this.axios.get('/api/buildings', {
+      this.axios.get('/api/classes', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this6.buildings = res.data;
+        _this6.classess = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5120,15 +5136,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_classrooms: function update_classrooms() {
+    update_buildings: function update_buildings() {
       var _this7 = this;
 
-      this.axios.get('/api/classrooms', {
+      this.axios.get('/api/buildings', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this7.classrooms = res.data;
+        _this7.buildings = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5164,18 +5180,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_students: function update_students() {
+    update_classrooms: function update_classrooms() {
       var _this8 = this;
 
-      this.axios.get('/api/students', {
+      this.axios.get('/api/classrooms', {
         params: {
-          api_token: $('#api_token').val(),
-          department_id: $('#department_student').val(),
-          name: $('#student_name').val(),
-          number: $('#student_number').val()
+          api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this8.students = res.data;
+        _this8.classrooms = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5211,18 +5224,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_teachers: function update_teachers() {
+    update_students: function update_students() {
       var _this9 = this;
 
-      this.axios.get('/api/teachers', {
+      this.axios.get('/api/students', {
         params: {
           api_token: $('#api_token').val(),
-          gender: $('#gender_teacher').val(),
-          name: $('#teacher_name').val(),
-          number: $('#teacher_number').val()
+          department_id: $('#department_student').val(),
+          name: $('#student_name').val(),
+          number: $('#student_number').val()
         }
       }).then(function (res) {
-        _this9.teachers = res.data;
+        _this9.students = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5258,15 +5271,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_courses: function update_courses() {
+    update_teachers: function update_teachers() {
       var _this10 = this;
 
-      this.axios.get('/api/courses', {
+      this.axios.get('/api/teachers', {
         params: {
-          api_token: $('#api_token').val()
+          api_token: $('#api_token').val(),
+          gender: $('#gender_teacher').val(),
+          name: $('#teacher_name').val(),
+          number: $('#teacher_number').val()
         }
       }).then(function (res) {
-        _this10.courses = res.data;
+        _this10.teachers = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5302,29 +5318,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_selectable_courses: function update_selectable_courses() {
+    update_courses: function update_courses() {
       var _this11 = this;
 
-      this.axios.get('/api/selectable_course', {
+      this.axios.get('/api/courses', {
         params: {
-          teacher_id: $('#teacher').val(),
-          department_id: $('#department').val(),
-          course_name: $('#course_name').val(),
-          course_number: $('#course_number').val()
+          api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this11.selectable_courses = res.data;
-
-        if (_this11.current_selectable_course_id !== 0) {
-          _this11.current_selectable_course = _this11.selectable_courses.filter(function (it) {
-            return it.id == _this11.current_selectable_course_id;
-          })[0];
-
-          if (!_this11.current_selectable_course) {
-            _this11.current_selectable_course_id = 0;
-            _this11.current_selectable_course = {};
-          }
-        }
+        _this11.courses = res.data;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5360,12 +5362,70 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
+    update_selectable_courses: function update_selectable_courses() {
+      var _this12 = this;
+
+      this.axios.get('/api/selectable_course', {
+        params: {
+          teacher_id: $('#teacher').val(),
+          department_id: $('#department').val(),
+          course_name: $('#course_name').val(),
+          course_number: $('#course_number').val()
+        }
+      }).then(function (res) {
+        _this12.selectable_courses = res.data;
+
+        if (_this12.current_selectable_course_id !== 0) {
+          _this12.current_selectable_course = _this12.selectable_courses.filter(function (it) {
+            return it.id == _this12.current_selectable_course_id;
+          })[0];
+
+          if (!_this12.current_selectable_course) {
+            _this12.current_selectable_course_id = 0;
+            _this12.current_selectable_course = {};
+          }
+        }
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i9 = 0, _Object$values9 = Object.values(res.response.data.errors); _i9 < _Object$values9.length; _i9++) {
+            var i = _Object$values9[_i9];
+            var _iteratorNormalCompletion9 = true;
+            var _didIteratorError9 = false;
+            var _iteratorError9 = undefined;
+
+            try {
+              for (var _iterator9 = i[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+                var error = _step9.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError9 = true;
+              _iteratorError9 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion9 && _iterator9["return"] != null) {
+                  _iterator9["return"]();
+                }
+              } finally {
+                if (_didIteratorError9) {
+                  throw _iteratorError9;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
     change_current_student: function change_current_student(index) {
       this.change_model_state(true);
       this.current_student = JSON.parse(JSON.stringify(this.students[index]));
     },
     update_student_info: function update_student_info() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.current_student.password) {
         this.current_student.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.current_student.password);
@@ -5376,53 +5436,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           api_token: $('#api_token').val(),
           student: this.current_student
         }).then(function (res) {
-          _this12.update_students();
-
-          $('.modal').modal('hide');
-
-          if (res.data.message) {
-            alert(res.data.message);
-          }
-        })["catch"](function (res) {
-          if (res.response && res.response.data && res.data.errors) {
-            var str = '';
-
-            for (var _i9 = 0, _Object$values9 = Object.values(res.response.data.errors); _i9 < _Object$values9.length; _i9++) {
-              var i = _Object$values9[_i9];
-              var _iteratorNormalCompletion9 = true;
-              var _didIteratorError9 = false;
-              var _iteratorError9 = undefined;
-
-              try {
-                for (var _iterator9 = i[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-                  var error = _step9.value;
-                  str += "".concat(i, "\n");
-                }
-              } catch (err) {
-                _didIteratorError9 = true;
-                _iteratorError9 = err;
-              } finally {
-                try {
-                  if (!_iteratorNormalCompletion9 && _iterator9["return"] != null) {
-                    _iterator9["return"]();
-                  }
-                } finally {
-                  if (_didIteratorError9) {
-                    throw _iteratorError9;
-                  }
-                }
-              }
-            }
-
-            alert(str);
-          }
-        });
-      } else {
-        this.axios.post('/api/students', {
-          api_token: $('#api_token').val(),
-          student: this.current_student
-        }).then(function (res) {
-          _this12.update_students();
+          _this13.update_students();
 
           $('.modal').modal('hide');
 
@@ -5462,28 +5476,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
             alert(str);
           }
-        })["finally"](function (res) {
-          _this12.current_student.password = '';
         });
-      }
-    },
-    change_current_teacher: function change_current_teacher(index) {
-      this.change_model_state(true);
-      this.current_teacher = JSON.parse(JSON.stringify(this.teachers[index]));
-    },
-    update_teacher_info: function update_teacher_info() {
-      var _this13 = this;
-
-      if (this.current_teacher.password) {
-        this.current_teacher.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.current_teacher.password);
-      }
-
-      if (this.modify_mode) {
-        this.axios.patch("/api/teachers/".concat(this.current_teacher.id), {
+      } else {
+        this.axios.post('/api/students', {
           api_token: $('#api_token').val(),
-          teacher: this.current_teacher
+          student: this.current_student
         }).then(function (res) {
-          _this13.update_teachers();
+          _this13.update_students();
 
           $('.modal').modal('hide');
 
@@ -5523,13 +5522,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
             alert(str);
           }
+        })["finally"](function (res) {
+          _this13.current_student.password = '';
         });
-      } else {
-        this.axios.post('/api/teachers', {
+      }
+    },
+    change_current_teacher: function change_current_teacher(index) {
+      this.change_model_state(true);
+      this.current_teacher = JSON.parse(JSON.stringify(this.teachers[index]));
+    },
+    update_teacher_info: function update_teacher_info() {
+      var _this14 = this;
+
+      if (this.current_teacher.password) {
+        this.current_teacher.password = bcryptjs__WEBPACK_IMPORTED_MODULE_0___default.a.hashSync(this.current_teacher.password);
+      }
+
+      if (this.modify_mode) {
+        this.axios.patch("/api/teachers/".concat(this.current_teacher.id), {
           api_token: $('#api_token').val(),
           teacher: this.current_teacher
         }).then(function (res) {
-          _this13.update_teachers();
+          _this14.update_teachers();
 
           $('.modal').modal('hide');
 
@@ -5569,24 +5583,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
             alert(str);
           }
-        })["finally"](function (res) {
-          _this13.current_teacher.password = '';
         });
-      }
-    },
-    change_current_course: function change_current_course(index) {
-      this.change_model_state(true);
-      this.current_course = JSON.parse(JSON.stringify(this.courses[index]));
-    },
-    update_course_info: function update_course_info() {
-      var _this14 = this;
-
-      if (this.modify_mode) {
-        this.axios.patch("/api/courses/".concat(this.current_course.id), {
+      } else {
+        this.axios.post('/api/teachers', {
           api_token: $('#api_token').val(),
-          course: this.current_course
+          teacher: this.current_teacher
         }).then(function (res) {
-          _this14.update_courses();
+          _this14.update_teachers();
 
           $('.modal').modal('hide');
 
@@ -5626,13 +5629,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
             alert(str);
           }
+        })["finally"](function (res) {
+          _this14.current_teacher.password = '';
         });
-      } else {
-        this.axios.post('/api/courses', {
+      }
+    },
+    change_current_course: function change_current_course(index) {
+      this.change_model_state(true);
+      this.current_course = JSON.parse(JSON.stringify(this.courses[index]));
+    },
+    update_course_info: function update_course_info() {
+      var _this15 = this;
+
+      if (this.modify_mode) {
+        this.axios.patch("/api/courses/".concat(this.current_course.id), {
           api_token: $('#api_token').val(),
           course: this.current_course
         }).then(function (res) {
-          _this14.update_courses();
+          _this15.update_courses();
 
           $('.modal').modal('hide');
 
@@ -5673,22 +5687,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             alert(str);
           }
         });
-      }
-    },
-    change_current_selectable_course: function change_current_selectable_course(course) {
-      this.change_model_state(true);
-      this.current_selectable_course = JSON.parse(JSON.stringify(course));
-      this.current_selectable_course_id = course.id;
-    },
-    update_selectable_course_info: function update_selectable_course_info() {
-      var _this15 = this;
-
-      if (this.modify_mode) {
-        this.axios.patch("/api/selectable_course/".concat(this.current_selectable_course.id), {
+      } else {
+        this.axios.post('/api/courses', {
           api_token: $('#api_token').val(),
-          selectable_course: this.current_selectable_course
+          course: this.current_course
         }).then(function (res) {
-          _this15.update_selectable_courses();
+          _this15.update_courses();
 
           $('.modal').modal('hide');
 
@@ -5729,17 +5733,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             alert(str);
           }
         });
-      } else {
-        this.axios.post('/api/selectable_course', {
+      }
+    },
+    change_current_selectable_course: function change_current_selectable_course(course) {
+      this.change_model_state(true);
+      this.current_selectable_course = JSON.parse(JSON.stringify(course));
+      this.current_selectable_course_id = course.id;
+    },
+    update_selectable_course_info: function update_selectable_course_info() {
+      var _this16 = this;
+
+      if (this.modify_mode) {
+        this.axios.patch("/api/selectable_course/".concat(this.current_selectable_course.id), {
           api_token: $('#api_token').val(),
           selectable_course: this.current_selectable_course
         }).then(function (res) {
-          _this15.update_selectable_courses();
-
-          $('.modal').modal('hide');
+          _this16.update_selectable_courses();
 
           if (res.data.message) {
             alert(res.data.message);
+          } else {
+            $('.modal').modal('hide');
           }
         })["catch"](function (res) {
           if (res.response && res.response.data && res.data.errors) {
@@ -5775,6 +5789,52 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             alert(str);
           }
         });
+      } else {
+        this.axios.post('/api/selectable_course', {
+          api_token: $('#api_token').val(),
+          selectable_course: this.current_selectable_course
+        }).then(function (res) {
+          _this16.update_selectable_courses();
+
+          $('.modal').modal('hide');
+
+          if (res.data.message) {
+            alert(res.data.message);
+          }
+        })["catch"](function (res) {
+          if (res.response && res.response.data && res.data.errors) {
+            var str = '';
+
+            for (var _i17 = 0, _Object$values17 = Object.values(res.response.data.errors); _i17 < _Object$values17.length; _i17++) {
+              var i = _Object$values17[_i17];
+              var _iteratorNormalCompletion17 = true;
+              var _didIteratorError17 = false;
+              var _iteratorError17 = undefined;
+
+              try {
+                for (var _iterator17 = i[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
+                  var error = _step17.value;
+                  str += "".concat(i, "\n");
+                }
+              } catch (err) {
+                _didIteratorError17 = true;
+                _iteratorError17 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion17 && _iterator17["return"] != null) {
+                    _iterator17["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError17) {
+                    throw _iteratorError17;
+                  }
+                }
+              }
+            }
+
+            alert(str);
+          }
+        });
       }
     },
     change_current_building: function change_current_building(building) {
@@ -5790,61 +5850,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_major = JSON.parse(JSON.stringify(major));
     },
     update_building_info: function update_building_info() {
-      var _this16 = this;
+      var _this17 = this;
 
       this.axios.patch("/api/buildings/".concat(this.current_building.id), {
         api_token: $('#api_token').val(),
         name: this.current_building.name
       }).then(function (res) {
-        _this16.update_buildings();
+        _this17.update_buildings();
 
-        _this16.current_building = {};
-      })["catch"](function (res) {
-        if (res.response && res.response.data && res.data.errors) {
-          var str = '';
-
-          for (var _i17 = 0, _Object$values17 = Object.values(res.response.data.errors); _i17 < _Object$values17.length; _i17++) {
-            var i = _Object$values17[_i17];
-            var _iteratorNormalCompletion17 = true;
-            var _didIteratorError17 = false;
-            var _iteratorError17 = undefined;
-
-            try {
-              for (var _iterator17 = i[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
-                var error = _step17.value;
-                str += "".concat(i, "\n");
-              }
-            } catch (err) {
-              _didIteratorError17 = true;
-              _iteratorError17 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion17 && _iterator17["return"] != null) {
-                  _iterator17["return"]();
-                }
-              } finally {
-                if (_didIteratorError17) {
-                  throw _iteratorError17;
-                }
-              }
-            }
-          }
-
-          alert(str);
-        }
-      });
-    },
-    update_classroom_info: function update_classroom_info() {
-      var _this17 = this;
-
-      this.axios.patch("/api/classrooms/".concat(this.current_classroom.id), {
-        api_token: $('#api_token').val(),
-        name: this.current_classroom.name,
-        building_id: this.current_classroom.building_id
-      }).then(function (res) {
-        _this17.update_classrooms();
-
-        _this17.current_classroom = {};
+        _this17.current_building = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5880,16 +5894,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_department_info: function update_department_info() {
+    update_classroom_info: function update_classroom_info() {
       var _this18 = this;
 
-      this.axios.patch("/api/departments/".concat(this.current_department.id), {
+      this.axios.patch("/api/classrooms/".concat(this.current_classroom.id), {
         api_token: $('#api_token').val(),
-        name: this.current_department.name
+        name: this.current_classroom.name,
+        building_id: this.current_classroom.building_id
       }).then(function (res) {
-        _this18.update_departments();
+        _this18.update_classrooms();
 
-        _this18.current_department = {};
+        _this18.current_classroom = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5925,17 +5940,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_major_info: function update_major_info() {
+    update_department_info: function update_department_info() {
       var _this19 = this;
 
-      this.axios.patch("/api/majors/".concat(this.current_major.id), {
+      this.axios.patch("/api/departments/".concat(this.current_department.id), {
         api_token: $('#api_token').val(),
-        name: this.current_major.name,
-        department_id: this.current_major.department_id
+        name: this.current_department.name
       }).then(function (res) {
-        _this19.update_majors();
+        _this19.update_departments();
 
-        _this19.current_major = {};
+        _this19.current_department = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5971,19 +5985,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_building: function delete_building(building) {
+    update_major_info: function update_major_info() {
       var _this20 = this;
 
-      this.axios["delete"]("/api/buildings/".concat(building.id), {
-        data: {
-          api_token: $('#api_token').val()
-        }
+      this.axios.patch("/api/majors/".concat(this.current_major.id), {
+        api_token: $('#api_token').val(),
+        name: this.current_major.name,
+        department_id: this.current_major.department_id
       }).then(function (res) {
-        _this20.update_buildings();
+        _this20.update_majors();
 
-        _this20.update_classrooms();
-
-        _this20.update_selectable_courses();
+        _this20.current_major = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6019,14 +6031,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_classroom: function delete_classroom(classroom) {
+    delete_building: function delete_building(building) {
       var _this21 = this;
 
-      this.axios["delete"]("/api/classrooms/".concat(classroom.id), {
+      this.axios["delete"]("/api/buildings/".concat(building.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
+        _this21.update_buildings();
+
         _this21.update_classrooms();
 
         _this21.update_selectable_courses();
@@ -6065,17 +6079,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_department: function delete_department(department) {
+    delete_classroom: function delete_classroom(classroom) {
       var _this22 = this;
 
-      this.axios["delete"]("/api/departments/".concat(department.id), {
+      this.axios["delete"]("/api/classrooms/".concat(classroom.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this22.update_departments();
-
-        _this22.update_majors();
+        _this22.update_classrooms();
 
         _this22.update_selectable_courses();
       })["catch"](function (res) {
@@ -6113,14 +6125,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_major: function delete_major(major) {
+    delete_department: function delete_department(department) {
       var _this23 = this;
 
-      this.axios["delete"]("/api/majors/".concat(major.id), {
+      this.axios["delete"]("/api/departments/".concat(department.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
+        _this23.update_departments();
+
         _this23.update_majors();
 
         _this23.update_selectable_courses();
@@ -6159,15 +6173,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_student: function delete_student(student_id) {
+    delete_major: function delete_major(major) {
       var _this24 = this;
 
-      this.axios["delete"]("/api/students/".concat(student_id), {
+      this.axios["delete"]("/api/majors/".concat(major.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this24.update_students();
+        _this24.update_majors();
 
         _this24.update_selectable_courses();
       })["catch"](function (res) {
@@ -6205,15 +6219,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_teacher: function delete_teacher(teacher_id) {
+    delete_student: function delete_student(student_id) {
       var _this25 = this;
 
-      this.axios["delete"]("/api/teachers/".concat(teacher_id), {
+      this.axios["delete"]("/api/students/".concat(student_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this25.update_teachers();
+        _this25.update_students();
 
         _this25.update_selectable_courses();
       })["catch"](function (res) {
@@ -6251,15 +6265,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_course: function delete_course(course_id) {
+    delete_teacher: function delete_teacher(teacher_id) {
       var _this26 = this;
 
-      this.axios["delete"]("/api/courses/".concat(course_id), {
+      this.axios["delete"]("/api/teachers/".concat(teacher_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this26.update_courses();
+        _this26.update_teachers();
 
         _this26.update_selectable_courses();
       })["catch"](function (res) {
@@ -6297,8 +6311,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    change_editing_index_or_update: function change_editing_index_or_update(arrangement) {
+    delete_course: function delete_course(course_id) {
       var _this27 = this;
+
+      this.axios["delete"]("/api/courses/".concat(course_id), {
+        data: {
+          api_token: $('#api_token').val()
+        }
+      }).then(function (res) {
+        _this27.update_courses();
+
+        _this27.update_selectable_courses();
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i28 = 0, _Object$values28 = Object.values(res.response.data.errors); _i28 < _Object$values28.length; _i28++) {
+            var i = _Object$values28[_i28];
+            var _iteratorNormalCompletion28 = true;
+            var _didIteratorError28 = false;
+            var _iteratorError28 = undefined;
+
+            try {
+              for (var _iterator28 = i[Symbol.iterator](), _step28; !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
+                var error = _step28.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError28 = true;
+              _iteratorError28 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion28 && _iterator28["return"] != null) {
+                  _iterator28["return"]();
+                }
+              } finally {
+                if (_didIteratorError28) {
+                  throw _iteratorError28;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    change_editing_index_or_update: function change_editing_index_or_update(arrangement) {
+      var _this28 = this;
 
       if (this.current_arrangement_id !== arrangement.id) {
         this.current_arrangement_id = arrangement.id;
@@ -6333,39 +6393,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           weeks: "".concat(this.current_arrangement_week_start, "-").concat(this.current_arrangement_week_end),
           sessions: "".concat(this.current_arrangement_day, ":").concat(this.current_arrangement_session_start, "-").concat(this.current_arrangement_session_end)
         }).then(function (res) {
-          _this27.update_selectable_courses();
+          _this28.update_selectable_courses();
 
           if (!res.data.success) {
             alert(res.data.message);
           } else {
-            _this27.current_arrangement_id = 0;
+            _this28.current_arrangement_id = 0;
           }
         })["catch"](function (res) {
           if (res.response && res.response.data && res.data.errors) {
             var str = '';
 
-            for (var _i28 = 0, _Object$values28 = Object.values(res.response.data.errors); _i28 < _Object$values28.length; _i28++) {
-              var i = _Object$values28[_i28];
-              var _iteratorNormalCompletion28 = true;
-              var _didIteratorError28 = false;
-              var _iteratorError28 = undefined;
+            for (var _i29 = 0, _Object$values29 = Object.values(res.response.data.errors); _i29 < _Object$values29.length; _i29++) {
+              var i = _Object$values29[_i29];
+              var _iteratorNormalCompletion29 = true;
+              var _didIteratorError29 = false;
+              var _iteratorError29 = undefined;
 
               try {
-                for (var _iterator28 = i[Symbol.iterator](), _step28; !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
-                  var error = _step28.value;
+                for (var _iterator29 = i[Symbol.iterator](), _step29; !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
+                  var error = _step29.value;
                   str += "".concat(i, "\n");
                 }
               } catch (err) {
-                _didIteratorError28 = true;
-                _iteratorError28 = err;
+                _didIteratorError29 = true;
+                _iteratorError29 = err;
               } finally {
                 try {
-                  if (!_iteratorNormalCompletion28 && _iterator28["return"] != null) {
-                    _iterator28["return"]();
+                  if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
+                    _iterator29["return"]();
                   }
                 } finally {
-                  if (_didIteratorError28) {
-                    throw _iteratorError28;
+                  if (_didIteratorError29) {
+                    throw _iteratorError29;
                   }
                 }
               }
@@ -6377,62 +6437,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     delete_arrangement: function delete_arrangement(arrangement_id) {
-      var _this28 = this;
+      var _this29 = this;
 
       this.axios["delete"]("/api/arrangements/".concat(arrangement_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this28.update_selectable_courses();
-
-        _this28.current_arrangement_id = 0;
-      })["catch"](function (res) {
-        if (res.response && res.response.data && res.data.errors) {
-          var str = '';
-
-          for (var _i29 = 0, _Object$values29 = Object.values(res.response.data.errors); _i29 < _Object$values29.length; _i29++) {
-            var i = _Object$values29[_i29];
-            var _iteratorNormalCompletion29 = true;
-            var _didIteratorError29 = false;
-            var _iteratorError29 = undefined;
-
-            try {
-              for (var _iterator29 = i[Symbol.iterator](), _step29; !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
-                var error = _step29.value;
-                str += "".concat(i, "\n");
-              }
-            } catch (err) {
-              _didIteratorError29 = true;
-              _iteratorError29 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
-                  _iterator29["return"]();
-                }
-              } finally {
-                if (_didIteratorError29) {
-                  throw _iteratorError29;
-                }
-              }
-            }
-          }
-
-          alert(str);
-        }
-      });
-    },
-    delete_selectable_course: function delete_selectable_course(selectable_course) {
-      var _this29 = this;
-
-      this.axios["delete"]("/api/selectable_course/".concat(selectable_course.id), {
-        data: {
-          api_token: $('#api_token').val()
-        }
-      }).then(function (res) {
         _this29.update_selectable_courses();
 
-        _this29.current_selectable_course_id = 0;
+        _this29.current_arrangement_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6468,28 +6482,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_arrangement: function add_arrangement() {
+    delete_selectable_course: function delete_selectable_course(selectable_course) {
       var _this30 = this;
 
-      this.axios.post("/api/arrangements/", {
-        api_token: $('#api_token').val(),
-        selectable_course_id: this.current_selectable_course.id,
-        classroom_id: this.new_arrangement_classroom_id,
-        weeks: "".concat(this.new_arrangement_week_start, "-").concat(this.new_arrangement_week_end),
-        sessions: "".concat(this.new_arrangement_day, ":").concat(this.new_arrangement_session_start, "-").concat(this.new_arrangement_session_end)
+      this.axios["delete"]("/api/selectable_course/".concat(selectable_course.id), {
+        data: {
+          api_token: $('#api_token').val()
+        }
       }).then(function (res) {
         _this30.update_selectable_courses();
 
-        if (!res.data.success) {
-          alert(res.data.message);
-        } else {
-          _this30.new_arrangement_week_start = 0;
-          _this30.new_arrangement_week_end = 0;
-          _this30.new_arrangement_day = 0;
-          _this30.new_arrangement_session_start = 0;
-          _this30.new_arrangement_session_end = 0;
-          _this30.new_arrangement_classroom_id = 0;
-        }
+        _this30.current_selectable_course_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6525,19 +6528,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_building_info: function add_building_info() {
+    add_arrangement: function add_arrangement() {
       var _this31 = this;
 
-      this.axios.post("/api/buildings", {
+      this.axios.post("/api/arrangements/", {
         api_token: $('#api_token').val(),
-        name: this.current_building.name
+        selectable_course_id: this.current_selectable_course.id,
+        classroom_id: this.new_arrangement_classroom_id,
+        weeks: "".concat(this.new_arrangement_week_start, "-").concat(this.new_arrangement_week_end),
+        sessions: "".concat(this.new_arrangement_day, ":").concat(this.new_arrangement_session_start, "-").concat(this.new_arrangement_session_end)
       }).then(function (res) {
-        _this31.update_buildings();
+        _this31.update_selectable_courses();
 
-        $('.modal').modal('hide');
-
-        if (res.data.message) {
+        if (!res.data.success) {
           alert(res.data.message);
+        } else {
+          _this31.new_arrangement_week_start = 0;
+          _this31.new_arrangement_week_end = 0;
+          _this31.new_arrangement_day = 0;
+          _this31.new_arrangement_session_start = 0;
+          _this31.new_arrangement_session_end = 0;
+          _this31.new_arrangement_classroom_id = 0;
         }
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
@@ -6574,16 +6585,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_classroom_info: function add_classroom_info() {
+    add_building_info: function add_building_info() {
       var _this32 = this;
 
-      this.axios.post("/api/classrooms", {
+      this.axios.post("/api/buildings", {
         api_token: $('#api_token').val(),
-        name: this.current_classroom.name,
-        number: this.current_classroom.number,
-        building_id: this.current_classroom.building_id
+        name: this.current_building.name
       }).then(function (res) {
-        _this32.update_classrooms();
+        _this32.update_buildings();
 
         $('.modal').modal('hide');
 
@@ -6625,14 +6634,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_department_info: function add_department_info() {
+    add_classroom_info: function add_classroom_info() {
       var _this33 = this;
 
-      this.axios.post("/api/departments", {
+      this.axios.post("/api/classrooms", {
         api_token: $('#api_token').val(),
-        name: this.current_department.name
+        name: this.current_classroom.name,
+        number: this.current_classroom.number,
+        building_id: this.current_classroom.building_id
       }).then(function (res) {
-        _this33.update_departments();
+        _this33.update_classrooms();
 
         $('.modal').modal('hide');
 
@@ -6674,15 +6685,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_major_info: function add_major_info() {
+    add_department_info: function add_department_info() {
       var _this34 = this;
 
-      this.axios.post("/api/majors", {
+      this.axios.post("/api/departments", {
         api_token: $('#api_token').val(),
-        name: this.current_major.name,
-        department_id: this.current_major.department_id
+        name: this.current_department.name
       }).then(function (res) {
-        _this34.update_majors();
+        _this34.update_departments();
 
         $('.modal').modal('hide');
 
@@ -6724,8 +6734,58 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    finish: function finish() {
+    add_major_info: function add_major_info() {
       var _this35 = this;
+
+      this.axios.post("/api/majors", {
+        api_token: $('#api_token').val(),
+        name: this.current_major.name,
+        department_id: this.current_major.department_id
+      }).then(function (res) {
+        _this35.update_majors();
+
+        $('.modal').modal('hide');
+
+        if (res.data.message) {
+          alert(res.data.message);
+        }
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i36 = 0, _Object$values36 = Object.values(res.response.data.errors); _i36 < _Object$values36.length; _i36++) {
+            var i = _Object$values36[_i36];
+            var _iteratorNormalCompletion36 = true;
+            var _didIteratorError36 = false;
+            var _iteratorError36 = undefined;
+
+            try {
+              for (var _iterator36 = i[Symbol.iterator](), _step36; !(_iteratorNormalCompletion36 = (_step36 = _iterator36.next()).done); _iteratorNormalCompletion36 = true) {
+                var error = _step36.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError36 = true;
+              _iteratorError36 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion36 && _iterator36["return"] != null) {
+                  _iterator36["return"]();
+                }
+              } finally {
+                if (_didIteratorError36) {
+                  throw _iteratorError36;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    finish: function finish() {
+      var _this36 = this;
 
       this.axios.post('/api/finish', {
         api_token: $('#api_token').val(),
@@ -6733,18 +6793,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }).then(function (res) {
         console.log(res);
 
-        _this35.get_finish();
+        _this36.get_finish();
       });
     },
     get_finish: function get_finish() {
-      var _this36 = this;
+      var _this37 = this;
 
       this.axios.get('/api/finish', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this36.finish_date = new Date(res.data);
+        _this37.finish_date = new Date(res.data);
       });
     }
   }
@@ -7140,18 +7200,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     update_selectable_courses: function update_selectable_courses() {
       var _this = this;
 
+      var update_user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       this.axios.get('/api/selectable_course', {
         params: {
           teacher_id: $('#teacher').val(),
           department_id: $('#department').val(),
           course_name: $('#course_name').val(),
           course_number: $('#course_number').val(),
-          course_type_id: $('#course_type_id').val()
+          course_type_id: $('#course_type_id').val(),
+          classes_id: this.user.classes_id
         }
       }).then(function (res) {
         _this.selectable_courses = res.data;
 
-        _this.update_user();
+        if (update_user) {
+          _this.update_user();
+        }
       });
     },
     update_course_student: function update_course_student() {
@@ -7201,6 +7265,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         _this4.courses = courses;
         _this4.toggling = false;
+
+        _this4.update_selectable_courses(false);
       });
     },
     update_teachers: function update_teachers() {
@@ -7304,7 +7370,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   mounted: function mounted() {
-    this.update_selectable_courses();
+    // this.update_selectable_courses()
     this.update_user();
     this.update_course_student();
     this.update_teachers();
@@ -66285,44 +66351,22 @@ var render = function() {
                                               "col-md-3 col-form-label text-md-right",
                                             attrs: { for: "enrollment_year" }
                                           },
-                                          [_vm._v("入学年份")]
+                                          [_vm._v("班级")]
                                         ),
                                         _vm._v(" "),
                                         _c("div", { staticClass: "col" }, [
                                           _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model:value",
-                                                value:
-                                                  _vm.current_student
-                                                    .enrollment_year,
-                                                expression:
-                                                  "current_student.enrollment_year",
-                                                arg: "value"
-                                              }
-                                            ],
                                             staticClass: "form-control",
                                             attrs: {
                                               id: "enrollment_year",
-                                              type: "text"
+                                              type: "text",
+                                              disabled: ""
                                             },
                                             domProps: {
-                                              value:
-                                                _vm.current_student
-                                                  .enrollment_year
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.current_student,
-                                                  "enrollment_year",
-                                                  $event.target.value
-                                                )
-                                              }
+                                              value: _vm.current_student.classes
+                                                ? _vm.current_student.classes
+                                                    .name
+                                                : ""
                                             }
                                           })
                                         ])
@@ -67979,6 +68023,91 @@ var render = function() {
                                                 _vm._v(
                                                   "\n                                                                " +
                                                     _vm._s(course_type.name) +
+                                                    "\n                                                            "
+                                                )
+                                              ]
+                                            )
+                                          })
+                                        ],
+                                        2
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "form-group row" }, [
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass:
+                                          "col-md-3 col-form-label text-md-right",
+                                        attrs: { for: "gender" }
+                                      },
+                                      [_vm._v("班级")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col" }, [
+                                      _c(
+                                        "select",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model:value",
+                                              value:
+                                                _vm.current_selectable_course
+                                                  .classes_id,
+                                              expression:
+                                                "current_selectable_course.classes_id",
+                                              arg: "value"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: { name: "course_id" },
+                                          on: {
+                                            change: function($event) {
+                                              var $$selectedVal = Array.prototype.filter
+                                                .call(
+                                                  $event.target.options,
+                                                  function(o) {
+                                                    return o.selected
+                                                  }
+                                                )
+                                                .map(function(o) {
+                                                  var val =
+                                                    "_value" in o
+                                                      ? o._value
+                                                      : o.value
+                                                  return val
+                                                })
+                                              _vm.$set(
+                                                _vm.current_selectable_course,
+                                                "classes_id",
+                                                $event.target.multiple
+                                                  ? $$selectedVal
+                                                  : $$selectedVal[0]
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "option",
+                                            { attrs: { value: "0" } },
+                                            [_vm._v("--选择班级--")]
+                                          ),
+                                          _vm._v(" "),
+                                          _vm._l(_vm.classess, function(
+                                            classes
+                                          ) {
+                                            return _c(
+                                              "option",
+                                              {
+                                                domProps: { value: classes.id }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                                " +
+                                                    _vm._s(classes.name) +
                                                     "\n                                                            "
                                                 )
                                               ]
@@ -71590,7 +71719,7 @@ var render = function() {
                               "col-md-4 col-form-label text-md-right",
                             attrs: { for: "enrollment_year" }
                           },
-                          [_vm._v("入学年份")]
+                          [_vm._v("班级")]
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-6" }, [
@@ -71601,7 +71730,7 @@ var render = function() {
                               type: "text",
                               disabled: ""
                             },
-                            domProps: { value: _vm.user.enrollment_year }
+                            domProps: { value: _vm.user.classes.name }
                           })
                         ])
                       ]),

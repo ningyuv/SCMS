@@ -14,7 +14,6 @@ $factory->define(Student::class, function (Faker $faker) {
         'number' => $faker->randomNumber(8),
         'name' => $faker->name,
         'gender' => $faker->numberBetween(1,2),
-        'enrollment_year' => $faker->year,
         'classes_id' => random_item(Classes::class, true),
         'major_id' => random_item(\App\Major::class, true),
         'api_token' => Str::random(60),

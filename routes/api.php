@@ -1,5 +1,6 @@
 <?php
 
+use App\Classes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,9 +29,7 @@ Route::middleware('auth:api-student')->get('/user/student', function (Request $r
         'selectable_courses.arrangements.classroom.building',
         'major',
         'classes'
-    )->where('id', $request->user()->id)->whereHas('selectable_course', function ($query) use($request) {
-        $query->where('classes_id', $request->user()->classes_id);
-    })->first();
+    )->where('id', $request->user()->id)->first();
 });
 Route::middleware('auth:api-teacher')->get('/user/teacher', function (Request $request) {
     return $request->user()->with(
@@ -55,5 +54,8 @@ Route::resource('/majors', 'MajorsController');
 Route::resource('/departments', 'DepartmentsController');
 Route::resource('/classrooms', 'ClassroomsController');
 Route::resource('/course_types', 'CourseTypesController');
+Route::get('/classes', function (Request $request) {
+    return Classes::all();
+});
 Route::get('finish', 'FinishController@get');
 Route::post('finish', 'FinishController@finish');

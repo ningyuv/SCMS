@@ -175,12 +175,13 @@
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="enrollment_year"
-                                                               class="col-md-3 col-form-label text-md-right">入学年份</label>
+                                                               class="col-md-3 col-form-label text-md-right">班级</label>
 
                                                         <div class="col">
                                                             <input id="enrollment_year" type="text"
                                                                    class="form-control"
-                                                                   v-model:value="current_student.enrollment_year">
+                                                                   :value="current_student.classes?current_student.classes.name:''"
+                                                                   disabled>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -631,6 +632,19 @@
                                                                 <option value="0">--选择课程性质--</option>
                                                                 <option :value="course_type.id" v-for="course_type in course_types">
                                                                     {{ course_type.name }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">班级</label>
+
+                                                        <div class="col">
+                                                            <select name="course_id" class="form-control" v-model:value="current_selectable_course.classes_id">
+                                                                <option value="0">--选择班级--</option>
+                                                                <option :value="classes.id" v-for="classes in classess">
+                                                                    {{ classes.name }}
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -1167,6 +1181,7 @@
                 course_types: [],
                 departments: [],
                 classrooms: [],
+                classess: [],
                 current_arrangement_id: 0,
                 current_arrangement_week_start: 0,
                 current_arrangement_week_end: 0,
@@ -1197,6 +1212,7 @@
             this.update_classrooms()
             this.update_course_types()
             this.get_finish()
+            this.update_classes()
             $('#list-tab>.list-group-item').on('click', ()=> {
                 $('#collapseOne').collapse('hide')
             })
@@ -1276,6 +1292,25 @@
                     }
                 }).then(res => {
                     this.majors = res.data
+                }).catch(res => {
+                    if (res.response && res.response.data && res.data.errors) {
+                        let str = ''
+                        for (let i of Object.values(res.response.data.errors)) {
+                            for (let error of i) {
+                                str += `${i}\n`
+                            }
+                        }
+                        alert(str)
+                    }
+                })
+            },
+            update_classes() {
+                this.axios.get('/api/classes', {
+                    params: {
+                        api_token: $('#api_token').val(),
+                    }
+                }).then(res => {
+                    this.classess = res.data
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''
@@ -1589,9 +1624,11 @@
                         selectable_course: this.current_selectable_course
                     }).then(res => {
                         this.update_selectable_courses()
-                        $('.modal').modal('hide')
                         if (res.data.message) {
                             alert(res.data.message)
+                        }
+                        else{
+                            $('.modal').modal('hide')
                         }
                     }).catch(res => {
                         if (res.response && res.response.data && res.data.errors) {

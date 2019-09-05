@@ -249,12 +249,12 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="enrollment_year"
-                                               class="col-md-4 col-form-label text-md-right">入学年份</label>
+                                               class="col-md-4 col-form-label text-md-right">班级</label>
 
                                         <div class="col-md-6">
                                             <input id="enrollment_year" type="text"
                                                    class="form-control"
-                                                   :value="user.enrollment_year" disabled>
+                                                   :value="user.classes.name" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -332,18 +332,21 @@
             }
         },
         methods: {
-            update_selectable_courses() {
+            update_selectable_courses(update_user=true) {
                 this.axios.get('/api/selectable_course', {
                     params: {
                         teacher_id: $('#teacher').val(),
                         department_id: $('#department').val(),
                         course_name: $('#course_name').val(),
                         course_number: $('#course_number').val(),
-                        course_type_id: $('#course_type_id').val()
+                        course_type_id: $('#course_type_id').val(),
+                        classes_id: this.user.classes_id
                     }
                 }).then((res) => {
                     this.selectable_courses = res.data
-                    this.update_user()
+                    if (update_user) {
+                        this.update_user()
+                    }
                 })
             },
             update_course_student() {
@@ -380,6 +383,7 @@
                     })
                     this.courses = courses
                     this.toggling = false
+                    this.update_selectable_courses(false)
                 })
             },
             update_teachers() {
@@ -464,7 +468,7 @@
             },
         },
         mounted() {
-            this.update_selectable_courses()
+            // this.update_selectable_courses()
             this.update_user()
             this.update_course_student()
             this.update_teachers()

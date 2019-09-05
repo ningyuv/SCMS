@@ -10,7 +10,7 @@ use Faker\Generator as Faker;
 
 $factory->define(CourseStudent::class, function (Faker $faker) {
     $student = App\Student::find(random_item(\App\Student::class));
-    $selectable_course = random_item(SelectableCourse::class,true);
+    $selectable_course = random_item(SelectableCourse::class,true, $student->classes_id);
 
     foreach ($student->selectable_courses as $course) {
         if (courses_conflict(SelectableCourse::find($selectable_course), $course)) {

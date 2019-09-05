@@ -24,7 +24,6 @@ class CreateStudentsTable extends Migration
             $table->string('name');
             $table->string('number')->unique();
             $table->integer('gender');
-            $table->year('enrollment_year');
             $table->bigInteger('classes_id')->unsigned();
             $table->bigInteger('major_id')->unsigned()->nullable();
             $table->timestamps();

@@ -32,6 +32,9 @@ class SelectableCourse extends Model
     public function course_type() {
         return $this->belongsTo(CourseType::class);
     }
+    public function classes() {
+        return $this->belongsTo(Classes::class);
+    }
 
     use SoftCascadeTrait;
     protected $softCascade = ['course_students', 'arrangements'];
