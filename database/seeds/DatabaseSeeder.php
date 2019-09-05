@@ -2,6 +2,7 @@
 
 use App\Arrangement;
 use App\Building;
+use App\Classes;
 use App\Classroom;
 use App\Course;
 use App\CourseStudent;
@@ -30,6 +31,15 @@ class DatabaseSeeder extends Seeder
         }
         foreach (department_names_array() as $department) {
             Department::create(['name' => $department]);
+        }
+        foreach (classes_array() as $classes) {
+            $classes = array_merge($classes, [
+                'department_id' => random_item(Department::class, true),
+                'compulsory_credit' => $faker->numberBetween(5,8),
+                'restriction_credit' => $faker->numberBetween(5,8),
+                'optional_credit' => $faker->numberBetween(10,12),
+            ]);
+            Classes::create($classes);
         }
         foreach (majors_array() as $major) {
             Major::create($major);

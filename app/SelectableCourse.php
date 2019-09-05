@@ -11,7 +11,7 @@ class SelectableCourse extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'course_id', 'teacher_id', 'max_num', 'course_type_id'
+        'course_id', 'teacher_id', 'max_num', 'course_type_id', 'classes_id'
     ];
 
     public function students(){

@@ -419,3 +419,19 @@ function classrooms_array() {
         ['name' => '209教室','number' => '209', 'building_id' => 5],
     ];
 }
+function classes_array() {
+    return [
+        ['name' => '1701班', 'number' => '1701'],
+        ['name' => '1702班', 'number' => '1702'],
+        ['name' => '1703班', 'number' => '1703'],
+        ['name' => '1704班', 'number' => '1704'],
+        ['name' => '1801班', 'number' => '1801'],
+        ['name' => '1802班', 'number' => '1802'],
+        ['name' => '1803班', 'number' => '1803'],
+        ['name' => '1804班', 'number' => '1804'],
+        ['name' => '1901班', 'number' => '1901'],
+        ['name' => '1902班', 'number' => '1902'],
+        ['name' => '1903班', 'number' => '1903'],
+        ['name' => '1904班', 'number' => '1904'],
+    ];
+}

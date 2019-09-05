@@ -21,9 +21,9 @@
                         <h5 class="card-header">选课</h5>
                         <div class="card-body">
                             <div class="row">
-                                <h3 class="col-md-2">必修学分: {{ compulsory_credit }}/{{ user.compulsory_credit }}</h3>
-                                <h3 class="col-md-2">限选学分: {{ restriction_credit }}/{{ user.restriction_credit }}</h3>
-                                <h3 class="col-md-2">任选学分: {{ optional_credit }}/{{ user.optional_credit }}</h3>
+                                <h3 class="col-md-2">必修学分: {{ compulsory_credit }}/{{ user.classes?user.classes.compulsory_credit:'' }}</h3>
+                                <h3 class="col-md-2">限选学分: {{ restriction_credit }}/{{ user.classes?user.classes.restriction_credit:'' }}</h3>
+                                <h3 class="col-md-2">任选学分: {{ optional_credit }}/{{ user.classes?user.classes.optional_credit:'' }}</h3>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
@@ -464,7 +464,6 @@
         computed: {
             compulsory_credit() {
                 let credit = 0
-                console.log(this.user.selectable_courses)
                 for (let i of this.user.selectable_courses.filter(it=>it.course_type_id==1)) {
                     credit+=parseFloat(i.course.credit)
                 }

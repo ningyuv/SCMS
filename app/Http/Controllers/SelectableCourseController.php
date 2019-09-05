@@ -33,7 +33,8 @@ class SelectableCourseController extends Controller
             'arrangements.selectable_course.course',
             'teacher',
             'students',
-            'course_type'
+            'course_type',
+            'classes'
         )->where($arr)
             ->whereHas('course', function ($query) {
                 $query->where('name', 'like', '%' . \request()->course_name . '%');

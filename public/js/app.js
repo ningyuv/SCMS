@@ -7270,7 +7270,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   computed: {
     compulsory_credit: function compulsory_credit() {
       var credit = 0;
-      console.log(this.user.selectable_courses);
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -70840,7 +70839,11 @@ var render = function() {
                         "必修学分: " +
                           _vm._s(_vm.compulsory_credit) +
                           "/" +
-                          _vm._s(_vm.user.compulsory_credit)
+                          _vm._s(
+                            _vm.user.classes
+                              ? _vm.user.classes.compulsory_credit
+                              : ""
+                          )
                       )
                     ]),
                     _vm._v(" "),
@@ -70849,7 +70852,11 @@ var render = function() {
                         "限选学分: " +
                           _vm._s(_vm.restriction_credit) +
                           "/" +
-                          _vm._s(_vm.user.restriction_credit)
+                          _vm._s(
+                            _vm.user.classes
+                              ? _vm.user.classes.restriction_credit
+                              : ""
+                          )
                       )
                     ]),
                     _vm._v(" "),
@@ -70858,7 +70865,11 @@ var render = function() {
                         "任选学分: " +
                           _vm._s(_vm.optional_credit) +
                           "/" +
-                          _vm._s(_vm.user.optional_credit)
+                          _vm._s(
+                            _vm.user.classes
+                              ? _vm.user.classes.optional_credit
+                              : ""
+                          )
                       )
                     ])
                   ]),

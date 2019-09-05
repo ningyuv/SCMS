@@ -25,10 +25,8 @@ class CreateStudentsTable extends Migration
             $table->string('number')->unique();
             $table->integer('gender');
             $table->year('enrollment_year');
+            $table->bigInteger('classes_id')->unsigned();
             $table->bigInteger('major_id')->unsigned()->nullable();
-            $table->float('compulsory_credit');
-            $table->float('restriction_credit');
-            $table->float('optional_credit');
             $table->timestamps();
             $table->rememberToken();
             $table->softDeletes();

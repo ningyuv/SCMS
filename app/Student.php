@@ -25,6 +25,9 @@ class Student extends Authenticatable
     public function major(){
         return $this->belongsTo(Major::class);
     }
+    public function classes() {
+        return $this->belongsTo(Classes::class);
+    }
 
     use SoftCascadeTrait;
     protected $softCascade = ['course_students'];
