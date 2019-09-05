@@ -70547,7 +70547,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "card" }, [
-                _c("h5", { staticClass: "card-header" }, [_vm._v("Featured")]),
+                _c("h5", { staticClass: "card-header" }, [_vm._v("选课")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "row" }, [

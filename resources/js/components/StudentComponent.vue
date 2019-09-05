@@ -18,7 +18,7 @@
                 <div class="tab-pane fade show active"
                      id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                     <div class="card">
-                        <h5 class="card-header">Featured</h5>
+                        <h5 class="card-header">选课</h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
