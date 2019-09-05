@@ -13,7 +13,7 @@ class Student extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'username', 'password', 'number', 'name', 'gender', 'enrollment_year', 'major_id', 'max_credit'
+        'username', 'password', 'number', 'name', 'gender', 'enrollment_year', 'major_id', 'compulsory_credit', 'restriction_credit', 'optional_credit'
     ];
     protected $hidden = [
         'password', 'remember_token', 'api_token'
