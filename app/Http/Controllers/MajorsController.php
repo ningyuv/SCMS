@@ -14,7 +14,7 @@ class MajorsController extends Controller
      */
     public function index()
     {
-        return response()->json(Major::all());
+        return response()->json(Major::with('department')->get());
     }
 
     /**

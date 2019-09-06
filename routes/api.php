@@ -27,8 +27,7 @@ Route::middleware('auth:api-student')->get('/user/student', function (Request $r
         'selectable_courses.arrangements.selectable_course.course',
         'selectable_courses.arrangements.selectable_course.teacher',
         'selectable_courses.arrangements.classroom.building',
-        'major',
-        'classes'
+        'classes.major.department'
     )->where('id', $request->user()->id)->first();
 });
 Route::middleware('auth:api-teacher')->get('/user/teacher', function (Request $request) {

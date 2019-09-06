@@ -33,17 +33,19 @@ class DatabaseSeeder extends Seeder
         foreach (department_names_array() as $department) {
             Department::create(['name' => $department]);
         }
-        foreach (classes_array() as $classes) {
-            $classes = array_merge($classes, [
-                'department_id' => random_item(Department::class, true),
+        foreach (majors_array() as $major) {
+            $major = array_merge($major, [
                 'compulsory_credit' => $faker->numberBetween(5,8),
                 'restriction_credit' => $faker->numberBetween(5,8),
                 'optional_credit' => $faker->numberBetween(10,12),
             ]);
-            Classes::create($classes);
-        }
-        foreach (majors_array() as $major) {
             Major::create($major);
+        }
+        foreach (classes_array() as $classes) {
+            $classes = array_merge($classes, [
+                'major_id' => random_item(Major::class, true),
+            ]);
+            Classes::create($classes);
         }
         foreach (courses_array() as $course) {
             $course = array_merge($course, ['number' => $faker->unique()->numberBetween(1000,9999)]);

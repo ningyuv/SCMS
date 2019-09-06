@@ -17,6 +17,9 @@ class CreateMajorsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('department_id')->unsigned()->nullable();
             $table->string('name')->unique();
+            $table->float('compulsory_credit');
+            $table->float('restriction_credit');
+            $table->float('optional_credit');
             $table->timestamps();
             $table->softDeletes();
         });

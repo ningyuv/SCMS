@@ -13,7 +13,7 @@ class Student extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'username', 'password', 'number', 'name', 'gender', 'major_id', 'compulsory_credit', 'restriction_credit', 'optional_credit', 'classes_id'
+        'username', 'password', 'number', 'name', 'gender', 'compulsory_credit', 'restriction_credit', 'optional_credit', 'classes_id'
     ];
     protected $hidden = [
         'password', 'remember_token', 'api_token'
@@ -21,9 +21,6 @@ class Student extends Authenticatable
 
     public function selectable_courses(){
         return $this->belongsToMany(SelectableCourse::class, 'course_student')->wherePivot('deleted_at', null);
-    }
-    public function major(){
-        return $this->belongsTo(Major::class);
     }
     public function classes() {
         return $this->belongsTo(Classes::class);

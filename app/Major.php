@@ -10,10 +10,13 @@ class Major extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'department_id'
+        'name', 'department_id', 'compulsory_credit', 'restriction_credit', 'optional_credit',
     ];
 
     public function department(){
         return $this->belongsTo(Department::class);
+    }
+    public function classes() {
+        return $this->hasMany(Classes::class);
     }
 }

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="row">
+    <div class="row" v-cloak>
         <div class="col-2">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action active"
@@ -21,9 +21,9 @@
                         <h5 class="card-header">选课</h5>
                         <div class="card-body">
                             <div class="row">
-                                <h3 class="col-md-2">必修学分: {{ compulsory_credit }}/{{ user.classes?user.classes.compulsory_credit:'' }}</h3>
-                                <h3 class="col-md-2">限选学分: {{ restriction_credit }}/{{ user.classes?user.classes.restriction_credit:'' }}</h3>
-                                <h3 class="col-md-2">任选学分: {{ optional_credit }}/{{ user.classes?user.classes.optional_credit:'' }}</h3>
+                                <h3 class="col-md-2">必修学分: {{ compulsory_credit }}/{{ user.classes?user.classes.major.compulsory_credit:'' }}</h3>
+                                <h3 class="col-md-2">限选学分: {{ restriction_credit }}/{{ user.classes?user.classes.major.restriction_credit:'' }}</h3>
+                                <h3 class="col-md-2">任选学分: {{ optional_credit }}/{{ user.classes?user.classes.major.optional_credit:'' }}</h3>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
@@ -264,7 +264,7 @@
                                         <div class="col-md-6">
                                             <select id="department_id"
                                                     class="form-control"
-                                                    :value="user.major.department_id" disabled>
+                                                    :value="user.classes&&user.classes.major?user.classes.major.department_id:0" disabled>
                                                 <option :value="department.id" v-for="department in departments">{{
                                                     department.name }}
                                                 </option>
@@ -277,7 +277,7 @@
                                         <div class="col-md-6">
                                             <input id="major" type="text"
                                                    class="form-control"
-                                                   :value="user.major.name" disabled>
+                                                   :value="user.classes&&user.classes.major?user.classes.major.name:''" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -504,4 +504,7 @@
 
 <style scoped>
 
+    [v-cloak] {
+        display: none;
+    }
 </style>

@@ -98,14 +98,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(student,index) in students">
+                                <tr v-for="student in students">
                                     <th>{{ student.number }}</th>
                                     <th>{{ student.name }}</th>
-                                    <th>{{ student.major?student.major.department.name:'' }}</th>
-                                    <th>{{ student.major?student.major.name:'' }}</th>
+                                    <th>{{ student.classes&&student.classes.major&&student.classes.major.department?student.classes.major.department.name:'' }}</th>
+                                    <th>{{ student.classes&&student.classes.major?student.classes.major.name:'' }}</th>
                                     <th>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#studentModel"
-                                                @click="change_current_student(index)">修改
+                                                @click="change_current_student(student)">修改
                                         </button>
                                     </th>
                                     <th>
@@ -178,43 +178,40 @@
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="enrollment_year"
-                                                               class="col-md-3 col-form-label text-md-right">班级</label>
+                                                               class="col-md-3 col-form-label text-md-right">专业</label>
 
                                                         <div class="col">
                                                             <input id="enrollment_year" type="text"
                                                                    class="form-control"
-                                                                   :value="current_student.classes?current_student.classes.name:''"
+                                                                   :value="current_student.classes&&current_student.classes.major?
+                                                                   current_student.classes.major.name:''"
                                                                    disabled>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="department_id"
+                                                        <label for="department_name"
                                                                class="col-md-3 col-form-label text-md-right">院系</label>
 
                                                         <div class="col">
-                                                            <select name="department" id="department_id"
-                                                                    class="form-control"
-                                                                    :value="current_student.major?current_student.major.department_id:0"
-                                                                    disabled>
-                                                                <option value="0">--选择院系--</option>
-                                                                <option :value="department.id"
-                                                                        v-for="department in departments">{{
-                                                                    department.name }}
-                                                                </option>
-                                                            </select>
+                                                            <input id="department_name" type="text"
+                                                                   class="form-control"
+                                                                   :value="current_student.classes&&current_student.classes.major&&
+                                                                   current_student.classes.major.department?
+                                                                   current_student.classes.major.department.name:''"
+                                                                   disabled>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="major"
-                                                               class="col-md-3 col-form-label text-md-right">专业</label>
+                                                               class="col-md-3 col-form-label text-md-right">班级</label>
 
                                                         <div class="col">
                                                             <select name="major" id="major" class="form-control"
-                                                                    v-model:value="current_student.major_id">
-                                                                <option value="0">--选择专业--</option>
-                                                                <option :value="major.id"
-                                                                        v-for="major in majors">
-                                                                    {{ major.name }}
+                                                                    v-model:value="current_student.classes_id">
+                                                                <option value="0">--选择班级--</option>
+                                                                <option :value="classes.id"
+                                                                        v-for="classes in classess">
+                                                                    {{ classes.name }}
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -289,13 +286,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(teacher, index) in teachers">
+                                <tr v-for="teacher in teachers">
                                     <th>{{ teacher.number }}</th>
                                     <th>{{ teacher.name }}</th>
                                     <th>{{ teacher.gender==1?'男':'女' }}</th>
                                     <th>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#teacherModel"
-                                                @click="change_current_teacher(index)">修改</button>
+                                                @click="change_current_teacher(teacher)">修改</button>
                                     </th>
                                     <th>
                                         <button class="btn btn-danger" @click="delete_teacher(teacher.id)">删除</button>
@@ -417,13 +414,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(course,index) in courses">
+                                <tr v-for="course in courses">
                                     <th>{{ course.number }}</th>
                                     <th>{{ course.name }}</th>
                                     <th>{{ course.credit }}</th>
                                     <th>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#courseModel"
-                                                @click="change_current_course(index)">修改</button>
+                                                @click="change_current_course(course)">修改</button>
                                     </th>
                                     <th>
                                         <button class="btn btn-danger" @click="delete_course(course.id)">删除
@@ -480,8 +477,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="department_id"
-                                                               class="col-md-3 col-form-label text-md-right">院系</label>
+                                                        <label class="col-md-3 col-form-label text-md-right">院系</label>
 
                                                         <div class="col">
                                                             <select name="department"
@@ -529,23 +525,20 @@
                                 <tr>
                                     <th scope="col">班级名称</th>
                                     <th scope="col">学院</th>
-                                    <th scope="col">必修学分</th>
-                                    <th scope="col">限选学分</th>
-                                    <th scope="col">任选学分</th>
                                     <th scope="col">修改</th>
                                     <th scope="col">删除</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(classes,index) in classess">
+                                <tr v-for="classes in classess">
                                     <th>{{ classes.name }}</th>
-                                    <th>{{ classes.department.name }}</th>
-                                    <th>{{ classes.compulsory_credit }}</th>
-                                    <th>{{ classes.restriction_credit }}</th>
-                                    <th>{{ classes.optional_credit }}</th>
+                                    <th>{{ classes.major?classes.major.department.name:'' }}</th>
+                                    <th>{{ classes.major?classes.major.compulsory_credit:0 }}</th>
+                                    <th>{{ classes.major?classes.major.restriction_credit:0 }}</th>
+                                    <th>{{ classes.major?classes.major.optional_credit:0 }}</th>
                                     <th>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#classesModel"
-                                                @click="change_current_classes(index)">修改</button>
+                                                @click="change_current_classes(classes)">修改</button>
                                     </th>
                                     <th>
                                         <button class="btn btn-danger" @click="delete_classes(classes.id)">删除
@@ -591,50 +584,16 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="gender"
-                                                               class="col-md-3 col-form-label text-md-right">必修学分</label>
-
-                                                        <div class="col">
-                                                            <input type="number"
-                                                                   class="form-control"
-                                                                   name="gender"
-                                                                   v-model:value="current_classes.compulsory_credit">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="gender"
-                                                               class="col-md-3 col-form-label text-md-right">限选学分</label>
-
-                                                        <div class="col">
-                                                            <input type="number"
-                                                                   class="form-control"
-                                                                   name="gender"
-                                                                   v-model:value="current_classes.restriction_credit">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="gender"
-                                                               class="col-md-3 col-form-label text-md-right">任选学分</label>
-
-                                                        <div class="col">
-                                                            <input type="number"
-                                                                   class="form-control"
-                                                                   name="gender"
-                                                                   v-model:value="current_classes.optional_credit">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="department_id"
-                                                               class="col-md-3 col-form-label text-md-right">院系</label>
+                                                        <label class="col-md-3 col-form-label text-md-right">专业</label>
 
                                                         <div class="col">
                                                             <select name="department"
                                                                     class="form-control"
-                                                                    v-model:value="current_classes.department_id">
-                                                                <option value="0">--选择院系--</option>
-                                                                <option :value="department.id"
-                                                                        v-for="department in departments">{{
-                                                                    department.name }}
+                                                                    v-model:value="current_classes.major_id">
+                                                                <option value="0">--选择专业--</option>
+                                                                <option :value="major.id"
+                                                                        v-for="major in majors">{{
+                                                                    major.name }}
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -1155,42 +1114,36 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <button class="btn btn-secondary form-control"
-                                            data-toggle="modal" data-target="#majorModel" @click="current_major={department_id:0}">添加</button>
+                                            data-toggle="modal" data-target="#majorModel"
+                                            @click="change_model_state(false)">添加</button>
                                 </div>
                             </div>
                             <table class="table table-bordered mt-4 text-center">
                                 <thead>
                                 <tr>
-                                    <th scope="col">编号</th>
                                     <th scope="col">名称</th>
                                     <th scope="col">所在学院</th>
+                                    <th scope="col">必修学分</th>
+                                    <th scope="col">限选学分</th>
+                                    <th scope="col">任选学分</th>
                                     <th scope="col">修改</th>
                                     <th scope="col">删除</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="major in majors">
-                                    <th>{{ major.id }}</th>
-                                    <th v-if="current_major.id==major.id">
-                                        <input type="text" class="form-control text-center" v-model:value="current_major.name">
-                                    </th>
-                                    <th v-else>{{ major.name }}</th>
-                                    <th v-if="current_major.id==major.id">
-                                        <select name="department_id" v-model:value="current_major.department_id" class="form-control">
-                                            <option :value="department.id" v-for="department in departments">{{ department.name }}</option>
-                                        </select>
-                                    </th>
-                                    <th v-else>
-                                        <select name="department_id" :value="major.department_id" class="form-control" disabled>
-                                            <option :value="department.id" v-for="department in departments">{{ department.name }}</option>
-                                        </select>
+                                    <th>{{ major.name }}</th>
+                                    <th>{{ major.department?major.department.name:'' }}</th>
+                                    <th>{{ major.compulsory_credit }}</th>
+                                    <th>{{ major.restriction_credit }}</th>
+                                    <th>{{ major.optional_credit }}</th>
+                                    <th>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#majorModel"
+                                                @click="change_current_major(major)">修改</button>
                                     </th>
                                     <th>
-                                        <button class="btn btn-primary" @click="update_major_info()" v-if="current_major.id==major.id">保存</button>
-                                        <button class="btn btn-primary" @click="change_current_major(major)" v-else>修改</button>
-                                    </th>
-                                    <th>
-                                        <button class="btn btn-danger" @click="delete_major(major)">删除</button>
+                                        <button class="btn btn-danger" @click="delete_major(major.id)">删除
+                                        </button>
                                     </th>
                                 </tr>
                                 </tbody>
@@ -1200,7 +1153,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="majorModelTitle">添加专业信息</h5>
+                                            <h5 class="modal-title" id="majorModelTitle">管理专业信息</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -1216,6 +1169,39 @@
                                                                    class="form-control"
                                                                    v-model:value="current_major.name"
                                                                    autofocus>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">必修学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_major.compulsory_credit">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">限选学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_major.restriction_credit">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">任选学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_major.optional_credit">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -1236,7 +1222,7 @@
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    @click="add_major_info">保存信息
+                                                    @click="update_major_info">保存信息
                                             </button>
                                         </div>
                                     </div>
@@ -1602,9 +1588,9 @@
                     }
                 })
             },
-            change_current_student(index) {
+            change_current_student(student) {
                 this.change_model_state(true)
-                this.current_student = JSON.parse(JSON.stringify(this.students[index]))
+                this.current_student = JSON.parse(JSON.stringify(student))
             },
             update_student_info() {
                 if (this.current_student.password) {
@@ -1657,9 +1643,9 @@
                     })
                 }
             },
-            change_current_teacher(index) {
+            change_current_teacher(teacher) {
                 this.change_model_state(true)
-                this.current_teacher = JSON.parse(JSON.stringify(this.teachers[index]))
+                this.current_teacher = JSON.parse(JSON.stringify(teacher))
             },
             update_teacher_info() {
                 if (this.current_teacher.password) {
@@ -1711,13 +1697,13 @@
                     })
                 }
             },
-            change_current_course(index) {
+            change_current_course(course) {
                 this.change_model_state(true)
-                this.current_course = JSON.parse(JSON.stringify(this.courses[index]))
+                this.current_course = JSON.parse(JSON.stringify(course))
             },
-            change_current_classes(index) {
+            change_current_classes(classes) {
                 this.change_model_state(true)
-                this.current_classes = JSON.parse(JSON.stringify(this.classess[index]))
+                this.current_classes = JSON.parse(JSON.stringify(classes))
             },
             update_course_info() {
                 if (this.modify_mode) {
@@ -1936,10 +1922,18 @@
                 this.axios.patch(`/api/majors/${this.current_major.id}`, {
                     api_token: $('#api_token').val(),
                     name: this.current_major.name,
-                    department_id: this.current_major.department_id
+                    department_id: this.current_major.department_id,
+                    compulsory_credit: this.current_major.compulsory_credit,
+                    restriction_credit: this.current_major.restriction_credit,
+                    optional_credit: this.current_major.optional_credit,
                 }).then(res => {
                     this.update_majors()
-                    this.current_major = {}
+                    if (res.data.message) {
+                        alert(res.data.message)
+                    }
+                    else {
+                        $('.modal').modal('hide')
+                    }
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {
                         let str = ''

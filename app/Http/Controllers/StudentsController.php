@@ -21,12 +21,11 @@ class StudentsController extends Controller
         array_push($arr, ['name', 'like', '%'.\request()->name.'%']);
         array_push($arr, ['number', 'like', '%'.\request()->number.'%']);
         $builder = Student::with(
-            'major.department',
-            'classes'
+            'classes.major.department'
         )->where($arr);
         if (\request()->department_id && \request()->department_id != 0) {
             $builder = $builder
-                ->whereHas('major', function ($query) {
+                ->whereHas('classes.major', function ($query) {
                     $query->where('department_id', \request()->department_id);
                 });
         }

@@ -14,7 +14,7 @@ class ClassesController extends Controller
      */
     public function index()
     {
-        return response()->json(Classes::with('department')->get());
+        return response()->json(Classes::with('major.department')->get());
     }
 
     /**

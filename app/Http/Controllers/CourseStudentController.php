@@ -62,7 +62,7 @@ class CourseStudentController extends Controller
                 ->pluck('course')
                 ->pluck('credit')
                 ->sum()
-            + $selectable_course->course->credit > $student->classes->compulsory_credit) {
+            + $selectable_course->course->credit > $student->classes->major->compulsory_credit) {
             return response()->json([
                 'success' => false,
                 'message' => '必修学分超限'
@@ -74,7 +74,7 @@ class CourseStudentController extends Controller
                 ->pluck('course')
                 ->pluck('credit')
                 ->sum()
-            + $selectable_course->course->credit > $student->classes->restriction_credit) {
+            + $selectable_course->course->credit > $student->classes->major->restriction_credit) {
             return response()->json([
                 'success' => false,
                 'message' => '限选学分超限'
@@ -86,7 +86,7 @@ class CourseStudentController extends Controller
                 ->pluck('course')
                 ->pluck('credit')
                 ->sum()
-            + $selectable_course->course->credit > $student->classes->optional_credit) {
+            + $selectable_course->course->credit > $student->classes->major->optional_credit) {
             return response()->json([
                 'success' => false,
                 'message' => '任选学分超限'

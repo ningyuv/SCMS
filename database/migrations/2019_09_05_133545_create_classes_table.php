@@ -17,10 +17,7 @@ class CreateClassesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('number');
-            $table->string('department_id');
-            $table->float('compulsory_credit');
-            $table->float('restriction_credit');
-            $table->float('optional_credit');
+            $table->string('major_id');
             $table->year('year')->nullable();
             $table->timestamps();
         });

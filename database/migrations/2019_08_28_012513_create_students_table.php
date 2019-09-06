@@ -25,7 +25,6 @@ class CreateStudentsTable extends Migration
             $table->string('number')->unique();
             $table->integer('gender');
             $table->bigInteger('classes_id')->unsigned();
-            $table->bigInteger('major_id')->unsigned()->nullable();
             $table->timestamps();
             $table->rememberToken();
             $table->softDeletes();
