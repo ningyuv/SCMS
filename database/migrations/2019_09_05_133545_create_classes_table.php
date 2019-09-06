@@ -21,7 +21,7 @@ class CreateClassesTable extends Migration
             $table->float('compulsory_credit');
             $table->float('restriction_credit');
             $table->float('optional_credit');
-            $table->year('year');
+            $table->year('year')->nullable();
             $table->timestamps();
         });
     }

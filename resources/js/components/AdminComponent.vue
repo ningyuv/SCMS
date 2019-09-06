@@ -12,6 +12,9 @@
                    id="list-tab-course-list" data-toggle="list" href="#list-tab-course" role="tab"
                    aria-controls="tab-course">管理课程信息</a>
                 <a class="list-group-item list-group-item-action"
+                   id="list-tab-classes-list" data-toggle="list" href="#list-tab-classes" role="tab"
+                   aria-controls="tab-classes">管理班级信息</a>
+                <a class="list-group-item list-group-item-action"
                    id="list-tab-selectable_course-list" data-toggle="list" href="#list-tab-selectable_course" role="tab"
                    aria-controls="tab-selectable_course">课程编排</a>
                 <a class="list-group-item list-group-item-action p-0"
@@ -500,6 +503,150 @@
                                             </button>
                                             <button type="button" class="btn btn-primary"
                                                     @click="update_course_info">保存信息
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade"
+                     id="list-tab-classes" role="tabpanel" aria-labelledby="list-tab-classes-list">
+                    <div class="card">
+                        <h5 class="card-header">管理班级信息</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-secondary form-control"
+                                            data-toggle="modal" data-target="#classesModel"
+                                            @click="change_model_state(false)">添加
+                                    </button>
+                                </div>
+                            </div>
+                            <table class="table table-bordered mt-4 text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">班级名称</th>
+                                    <th scope="col">学院</th>
+                                    <th scope="col">必修学分</th>
+                                    <th scope="col">限选学分</th>
+                                    <th scope="col">任选学分</th>
+                                    <th scope="col">修改</th>
+                                    <th scope="col">删除</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(classes,index) in classess">
+                                    <th>{{ classes.name }}</th>
+                                    <th>{{ classes.department.name }}</th>
+                                    <th>{{ classes.compulsory_credit }}</th>
+                                    <th>{{ classes.restriction_credit }}</th>
+                                    <th>{{ classes.optional_credit }}</th>
+                                    <th>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#classesModel"
+                                                @click="change_current_classes(index)">修改</button>
+                                    </th>
+                                    <th>
+                                        <button class="btn btn-danger" @click="delete_classes(classes.id)">删除
+                                        </button>
+                                    </th>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="modal fade" id="classesModel" tabindex="-1" role="dialog"
+                                 aria-labelledby="classesModelTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="classesModelTitle">编辑班级信息</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col">
+                                                    <div class="form-group row">
+                                                        <label for="number"
+                                                               class="col-md-3 col-form-label text-md-right">班号</label>
+
+                                                        <div class="col">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   name="number"
+                                                                   v-model:value="current_classes.number"
+                                                                   autofocus>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="name" class="col-md-3 col-form-label text-md-right">班级名</label>
+
+                                                        <div class="col">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   name="name"
+                                                                   v-model:value="current_classes.name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">必修学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_classes.compulsory_credit">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">限选学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_classes.restriction_credit">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gender"
+                                                               class="col-md-3 col-form-label text-md-right">任选学分</label>
+
+                                                        <div class="col">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="gender"
+                                                                   v-model:value="current_classes.optional_credit">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="department_id"
+                                                               class="col-md-3 col-form-label text-md-right">院系</label>
+
+                                                        <div class="col">
+                                                            <select name="department"
+                                                                    class="form-control"
+                                                                    v-model:value="current_classes.department_id">
+                                                                <option value="0">--选择院系--</option>
+                                                                <option :value="department.id"
+                                                                        v-for="department in departments">{{
+                                                                    department.name }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消
+                                            </button>
+                                            <button type="button" class="btn btn-primary"
+                                                    @click="update_classes_info">保存信息
                                             </button>
                                         </div>
                                     </div>
@@ -1167,6 +1314,7 @@
                 current_student: {},
                 current_teacher: {},
                 current_course: {},
+                current_classes: {},
                 current_selectable_course: {},
                 current_selectable_course_id: 0,
                 current_building: {},
@@ -1567,6 +1715,10 @@
                 this.change_model_state(true)
                 this.current_course = JSON.parse(JSON.stringify(this.courses[index]))
             },
+            change_current_classes(index) {
+                this.change_model_state(true)
+                this.current_classes = JSON.parse(JSON.stringify(this.classess[index]))
+            },
             update_course_info() {
                 if (this.modify_mode) {
                     this.axios.patch(`/api/courses/${this.current_course.id}`, {
@@ -1595,6 +1747,51 @@
                         course: this.current_course
                     }).then(res => {
                         this.update_courses()
+                        $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
+                    }).catch(res => {
+                        if (res.response && res.response.data && res.data.errors) {
+                            let str = ''
+                            for (let i of Object.values(res.response.data.errors)) {
+                                for (let error of i) {
+                                    str += `${i}\n`
+                                }
+                            }
+                            alert(str)
+                        }
+                    })
+                }
+            },
+            update_classes_info() {
+                if (this.modify_mode) {
+                    this.axios.patch(`/api/classes/${this.current_classes.id}`, {
+                        api_token: $('#api_token').val(),
+                        classes: this.current_classes
+                    }).then(res => {
+                        this.update_classes()
+                        $('.modal').modal('hide')
+                        if (res.data.message) {
+                            alert(res.data.message)
+                        }
+                    }).catch(res => {
+                        if (res.response && res.response.data && res.data.errors) {
+                            let str = ''
+                            for (let i of Object.values(res.response.data.errors)) {
+                                for (let error of i) {
+                                    str += `${i}\n`
+                                }
+                            }
+                            alert(str)
+                        }
+                    })
+                } else {
+                    this.axios.post('/api/classes', {
+                        api_token: $('#api_token').val(),
+                        classes: this.current_classes
+                    }).then(res => {
+                        this.update_classes()
                         $('.modal').modal('hide')
                         if (res.data.message) {
                             alert(res.data.message)
@@ -1884,6 +2081,26 @@
                     }
                 }).then(res => {
                     this.update_courses()
+                    this.update_selectable_courses()
+                }).catch(res => {
+                    if (res.response && res.response.data && res.data.errors) {
+                        let str = ''
+                        for (let i of Object.values(res.response.data.errors)) {
+                            for (let error of i) {
+                                str += `${i}\n`
+                            }
+                        }
+                        alert(str)
+                    }
+                })
+            },
+            delete_classes(classes_id) {
+                this.axios.delete(`/api/classes/${classes_id}`, {
+                    data: {
+                        api_token: $('#api_token').val()
+                    }
+                }).then(res => {
+                    this.update_classes()
                     this.update_selectable_courses()
                 }).catch(res => {
                     if (res.response && res.response.data && res.data.errors) {

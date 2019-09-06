@@ -254,7 +254,7 @@
                                         <div class="col-md-6">
                                             <input id="enrollment_year" type="text"
                                                    class="form-control"
-                                                   :value="user.classes.name" disabled>
+                                                   :value="user.classes?user.classes.name:''" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group row">

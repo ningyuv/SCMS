@@ -4887,6 +4887,153 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminComponent",
@@ -4897,6 +5044,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       current_student: {},
       current_teacher: {},
       current_course: {},
+      current_classes: {},
       current_selectable_course: {},
       current_selectable_course_id: 0,
       current_building: {},
@@ -5638,6 +5786,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.change_model_state(true);
       this.current_course = JSON.parse(JSON.stringify(this.courses[index]));
     },
+    change_current_classes: function change_current_classes(index) {
+      this.change_model_state(true);
+      this.current_classes = JSON.parse(JSON.stringify(this.classess[index]));
+    },
     update_course_info: function update_course_info() {
       var _this15 = this;
 
@@ -5735,25 +5887,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       }
     },
-    change_current_selectable_course: function change_current_selectable_course(course) {
-      this.change_model_state(true);
-      this.current_selectable_course = JSON.parse(JSON.stringify(course));
-      this.current_selectable_course_id = course.id;
-    },
-    update_selectable_course_info: function update_selectable_course_info() {
+    update_classes_info: function update_classes_info() {
       var _this16 = this;
 
       if (this.modify_mode) {
-        this.axios.patch("/api/selectable_course/".concat(this.current_selectable_course.id), {
+        this.axios.patch("/api/classes/".concat(this.current_classes.id), {
           api_token: $('#api_token').val(),
-          selectable_course: this.current_selectable_course
+          classes: this.current_classes
         }).then(function (res) {
-          _this16.update_selectable_courses();
+          _this16.update_classes();
+
+          $('.modal').modal('hide');
 
           if (res.data.message) {
             alert(res.data.message);
-          } else {
-            $('.modal').modal('hide');
           }
         })["catch"](function (res) {
           if (res.response && res.response.data && res.data.errors) {
@@ -5790,11 +5937,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         });
       } else {
-        this.axios.post('/api/selectable_course', {
+        this.axios.post('/api/classes', {
           api_token: $('#api_token').val(),
-          selectable_course: this.current_selectable_course
+          classes: this.current_classes
         }).then(function (res) {
-          _this16.update_selectable_courses();
+          _this16.update_classes();
 
           $('.modal').modal('hide');
 
@@ -5837,6 +5984,108 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       }
     },
+    change_current_selectable_course: function change_current_selectable_course(course) {
+      this.change_model_state(true);
+      this.current_selectable_course = JSON.parse(JSON.stringify(course));
+      this.current_selectable_course_id = course.id;
+    },
+    update_selectable_course_info: function update_selectable_course_info() {
+      var _this17 = this;
+
+      if (this.modify_mode) {
+        this.axios.patch("/api/selectable_course/".concat(this.current_selectable_course.id), {
+          api_token: $('#api_token').val(),
+          selectable_course: this.current_selectable_course
+        }).then(function (res) {
+          _this17.update_selectable_courses();
+
+          if (res.data.message) {
+            alert(res.data.message);
+          } else {
+            $('.modal').modal('hide');
+          }
+        })["catch"](function (res) {
+          if (res.response && res.response.data && res.data.errors) {
+            var str = '';
+
+            for (var _i18 = 0, _Object$values18 = Object.values(res.response.data.errors); _i18 < _Object$values18.length; _i18++) {
+              var i = _Object$values18[_i18];
+              var _iteratorNormalCompletion18 = true;
+              var _didIteratorError18 = false;
+              var _iteratorError18 = undefined;
+
+              try {
+                for (var _iterator18 = i[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+                  var error = _step18.value;
+                  str += "".concat(i, "\n");
+                }
+              } catch (err) {
+                _didIteratorError18 = true;
+                _iteratorError18 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion18 && _iterator18["return"] != null) {
+                    _iterator18["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError18) {
+                    throw _iteratorError18;
+                  }
+                }
+              }
+            }
+
+            alert(str);
+          }
+        });
+      } else {
+        this.axios.post('/api/selectable_course', {
+          api_token: $('#api_token').val(),
+          selectable_course: this.current_selectable_course
+        }).then(function (res) {
+          _this17.update_selectable_courses();
+
+          $('.modal').modal('hide');
+
+          if (res.data.message) {
+            alert(res.data.message);
+          }
+        })["catch"](function (res) {
+          if (res.response && res.response.data && res.data.errors) {
+            var str = '';
+
+            for (var _i19 = 0, _Object$values19 = Object.values(res.response.data.errors); _i19 < _Object$values19.length; _i19++) {
+              var i = _Object$values19[_i19];
+              var _iteratorNormalCompletion19 = true;
+              var _didIteratorError19 = false;
+              var _iteratorError19 = undefined;
+
+              try {
+                for (var _iterator19 = i[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
+                  var error = _step19.value;
+                  str += "".concat(i, "\n");
+                }
+              } catch (err) {
+                _didIteratorError19 = true;
+                _iteratorError19 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion19 && _iterator19["return"] != null) {
+                    _iterator19["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError19) {
+                    throw _iteratorError19;
+                  }
+                }
+              }
+            }
+
+            alert(str);
+          }
+        });
+      }
+    },
     change_current_building: function change_current_building(building) {
       this.current_building = JSON.parse(JSON.stringify(building));
     },
@@ -5850,106 +6099,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.current_major = JSON.parse(JSON.stringify(major));
     },
     update_building_info: function update_building_info() {
-      var _this17 = this;
+      var _this18 = this;
 
       this.axios.patch("/api/buildings/".concat(this.current_building.id), {
         api_token: $('#api_token').val(),
         name: this.current_building.name
       }).then(function (res) {
-        _this17.update_buildings();
+        _this18.update_buildings();
 
-        _this17.current_building = {};
-      })["catch"](function (res) {
-        if (res.response && res.response.data && res.data.errors) {
-          var str = '';
-
-          for (var _i18 = 0, _Object$values18 = Object.values(res.response.data.errors); _i18 < _Object$values18.length; _i18++) {
-            var i = _Object$values18[_i18];
-            var _iteratorNormalCompletion18 = true;
-            var _didIteratorError18 = false;
-            var _iteratorError18 = undefined;
-
-            try {
-              for (var _iterator18 = i[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
-                var error = _step18.value;
-                str += "".concat(i, "\n");
-              }
-            } catch (err) {
-              _didIteratorError18 = true;
-              _iteratorError18 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion18 && _iterator18["return"] != null) {
-                  _iterator18["return"]();
-                }
-              } finally {
-                if (_didIteratorError18) {
-                  throw _iteratorError18;
-                }
-              }
-            }
-          }
-
-          alert(str);
-        }
-      });
-    },
-    update_classroom_info: function update_classroom_info() {
-      var _this18 = this;
-
-      this.axios.patch("/api/classrooms/".concat(this.current_classroom.id), {
-        api_token: $('#api_token').val(),
-        name: this.current_classroom.name,
-        building_id: this.current_classroom.building_id
-      }).then(function (res) {
-        _this18.update_classrooms();
-
-        _this18.current_classroom = {};
-      })["catch"](function (res) {
-        if (res.response && res.response.data && res.data.errors) {
-          var str = '';
-
-          for (var _i19 = 0, _Object$values19 = Object.values(res.response.data.errors); _i19 < _Object$values19.length; _i19++) {
-            var i = _Object$values19[_i19];
-            var _iteratorNormalCompletion19 = true;
-            var _didIteratorError19 = false;
-            var _iteratorError19 = undefined;
-
-            try {
-              for (var _iterator19 = i[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
-                var error = _step19.value;
-                str += "".concat(i, "\n");
-              }
-            } catch (err) {
-              _didIteratorError19 = true;
-              _iteratorError19 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion19 && _iterator19["return"] != null) {
-                  _iterator19["return"]();
-                }
-              } finally {
-                if (_didIteratorError19) {
-                  throw _iteratorError19;
-                }
-              }
-            }
-          }
-
-          alert(str);
-        }
-      });
-    },
-    update_department_info: function update_department_info() {
-      var _this19 = this;
-
-      this.axios.patch("/api/departments/".concat(this.current_department.id), {
-        api_token: $('#api_token').val(),
-        name: this.current_department.name
-      }).then(function (res) {
-        _this19.update_departments();
-
-        _this19.current_department = {};
+        _this18.current_building = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -5985,17 +6143,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    update_major_info: function update_major_info() {
-      var _this20 = this;
+    update_classroom_info: function update_classroom_info() {
+      var _this19 = this;
 
-      this.axios.patch("/api/majors/".concat(this.current_major.id), {
+      this.axios.patch("/api/classrooms/".concat(this.current_classroom.id), {
         api_token: $('#api_token').val(),
-        name: this.current_major.name,
-        department_id: this.current_major.department_id
+        name: this.current_classroom.name,
+        building_id: this.current_classroom.building_id
       }).then(function (res) {
-        _this20.update_majors();
+        _this19.update_classrooms();
 
-        _this20.current_major = {};
+        _this19.current_classroom = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6031,19 +6189,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_building: function delete_building(building) {
-      var _this21 = this;
+    update_department_info: function update_department_info() {
+      var _this20 = this;
 
-      this.axios["delete"]("/api/buildings/".concat(building.id), {
-        data: {
-          api_token: $('#api_token').val()
-        }
+      this.axios.patch("/api/departments/".concat(this.current_department.id), {
+        api_token: $('#api_token').val(),
+        name: this.current_department.name
       }).then(function (res) {
-        _this21.update_buildings();
+        _this20.update_departments();
 
-        _this21.update_classrooms();
-
-        _this21.update_selectable_courses();
+        _this20.current_department = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6079,17 +6234,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_classroom: function delete_classroom(classroom) {
-      var _this22 = this;
+    update_major_info: function update_major_info() {
+      var _this21 = this;
 
-      this.axios["delete"]("/api/classrooms/".concat(classroom.id), {
-        data: {
-          api_token: $('#api_token').val()
-        }
+      this.axios.patch("/api/majors/".concat(this.current_major.id), {
+        api_token: $('#api_token').val(),
+        name: this.current_major.name,
+        department_id: this.current_major.department_id
       }).then(function (res) {
-        _this22.update_classrooms();
+        _this21.update_majors();
 
-        _this22.update_selectable_courses();
+        _this21.current_major = {};
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6125,19 +6280,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_department: function delete_department(department) {
-      var _this23 = this;
+    delete_building: function delete_building(building) {
+      var _this22 = this;
 
-      this.axios["delete"]("/api/departments/".concat(department.id), {
+      this.axios["delete"]("/api/buildings/".concat(building.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this23.update_departments();
+        _this22.update_buildings();
 
-        _this23.update_majors();
+        _this22.update_classrooms();
 
-        _this23.update_selectable_courses();
+        _this22.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6173,17 +6328,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_major: function delete_major(major) {
-      var _this24 = this;
+    delete_classroom: function delete_classroom(classroom) {
+      var _this23 = this;
 
-      this.axios["delete"]("/api/majors/".concat(major.id), {
+      this.axios["delete"]("/api/classrooms/".concat(classroom.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this24.update_majors();
+        _this23.update_classrooms();
 
-        _this24.update_selectable_courses();
+        _this23.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6219,17 +6374,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_student: function delete_student(student_id) {
-      var _this25 = this;
+    delete_department: function delete_department(department) {
+      var _this24 = this;
 
-      this.axios["delete"]("/api/students/".concat(student_id), {
+      this.axios["delete"]("/api/departments/".concat(department.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this25.update_students();
+        _this24.update_departments();
 
-        _this25.update_selectable_courses();
+        _this24.update_majors();
+
+        _this24.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6265,17 +6422,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_teacher: function delete_teacher(teacher_id) {
-      var _this26 = this;
+    delete_major: function delete_major(major) {
+      var _this25 = this;
 
-      this.axios["delete"]("/api/teachers/".concat(teacher_id), {
+      this.axios["delete"]("/api/majors/".concat(major.id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this26.update_teachers();
+        _this25.update_majors();
 
-        _this26.update_selectable_courses();
+        _this25.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6311,17 +6468,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_course: function delete_course(course_id) {
-      var _this27 = this;
+    delete_student: function delete_student(student_id) {
+      var _this26 = this;
 
-      this.axios["delete"]("/api/courses/".concat(course_id), {
+      this.axios["delete"]("/api/students/".concat(student_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this27.update_courses();
+        _this26.update_students();
 
-        _this27.update_selectable_courses();
+        _this26.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6357,96 +6514,63 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    change_editing_index_or_update: function change_editing_index_or_update(arrangement) {
-      var _this28 = this;
+    delete_teacher: function delete_teacher(teacher_id) {
+      var _this27 = this;
 
-      if (this.current_arrangement_id !== arrangement.id) {
-        this.current_arrangement_id = arrangement.id;
-        this.current_arrangement_classroom_id = arrangement.classroom_id;
-
-        var _arrangement$weeks$sp = arrangement.weeks.split('-'),
-            _arrangement$weeks$sp2 = _slicedToArray(_arrangement$weeks$sp, 2),
-            week_start = _arrangement$weeks$sp2[0],
-            week_end = _arrangement$weeks$sp2[1];
-
-        this.current_arrangement_week_start = week_start;
-        this.current_arrangement_week_end = week_end;
-
-        var _arrangement$sessions = arrangement.sessions.split(':'),
-            _arrangement$sessions2 = _slicedToArray(_arrangement$sessions, 2),
-            day = _arrangement$sessions2[0],
-            sessions = _arrangement$sessions2[1];
-
-        this.current_arrangement_day = day;
-
-        var _sessions$split = sessions.split('-'),
-            _sessions$split2 = _slicedToArray(_sessions$split, 2),
-            session_start = _sessions$split2[0],
-            session_end = _sessions$split2[1];
-
-        this.current_arrangement_session_start = session_start;
-        this.current_arrangement_session_end = session_end;
-      } else {
-        this.axios.patch("/api/arrangements/".concat(arrangement.id), {
-          api_token: $('#api_token').val(),
-          classroom_id: this.current_arrangement_classroom_id,
-          weeks: "".concat(this.current_arrangement_week_start, "-").concat(this.current_arrangement_week_end),
-          sessions: "".concat(this.current_arrangement_day, ":").concat(this.current_arrangement_session_start, "-").concat(this.current_arrangement_session_end)
-        }).then(function (res) {
-          _this28.update_selectable_courses();
-
-          if (!res.data.success) {
-            alert(res.data.message);
-          } else {
-            _this28.current_arrangement_id = 0;
-          }
-        })["catch"](function (res) {
-          if (res.response && res.response.data && res.data.errors) {
-            var str = '';
-
-            for (var _i29 = 0, _Object$values29 = Object.values(res.response.data.errors); _i29 < _Object$values29.length; _i29++) {
-              var i = _Object$values29[_i29];
-              var _iteratorNormalCompletion29 = true;
-              var _didIteratorError29 = false;
-              var _iteratorError29 = undefined;
-
-              try {
-                for (var _iterator29 = i[Symbol.iterator](), _step29; !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
-                  var error = _step29.value;
-                  str += "".concat(i, "\n");
-                }
-              } catch (err) {
-                _didIteratorError29 = true;
-                _iteratorError29 = err;
-              } finally {
-                try {
-                  if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
-                    _iterator29["return"]();
-                  }
-                } finally {
-                  if (_didIteratorError29) {
-                    throw _iteratorError29;
-                  }
-                }
-              }
-            }
-
-            alert(str);
-          }
-        });
-      }
-    },
-    delete_arrangement: function delete_arrangement(arrangement_id) {
-      var _this29 = this;
-
-      this.axios["delete"]("/api/arrangements/".concat(arrangement_id), {
+      this.axios["delete"]("/api/teachers/".concat(teacher_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this29.update_selectable_courses();
+        _this27.update_teachers();
 
-        _this29.current_arrangement_id = 0;
+        _this27.update_selectable_courses();
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i29 = 0, _Object$values29 = Object.values(res.response.data.errors); _i29 < _Object$values29.length; _i29++) {
+            var i = _Object$values29[_i29];
+            var _iteratorNormalCompletion29 = true;
+            var _didIteratorError29 = false;
+            var _iteratorError29 = undefined;
+
+            try {
+              for (var _iterator29 = i[Symbol.iterator](), _step29; !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
+                var error = _step29.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError29 = true;
+              _iteratorError29 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
+                  _iterator29["return"]();
+                }
+              } finally {
+                if (_didIteratorError29) {
+                  throw _iteratorError29;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    delete_course: function delete_course(course_id) {
+      var _this28 = this;
+
+      this.axios["delete"]("/api/courses/".concat(course_id), {
+        data: {
+          api_token: $('#api_token').val()
+        }
+      }).then(function (res) {
+        _this28.update_courses();
+
+        _this28.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6482,17 +6606,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    delete_selectable_course: function delete_selectable_course(selectable_course) {
-      var _this30 = this;
+    delete_classes: function delete_classes(classes_id) {
+      var _this29 = this;
 
-      this.axios["delete"]("/api/selectable_course/".concat(selectable_course.id), {
+      this.axios["delete"]("/api/classes/".concat(classes_id), {
         data: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this30.update_selectable_courses();
+        _this29.update_classes();
 
-        _this30.current_selectable_course_id = 0;
+        _this29.update_selectable_courses();
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6528,77 +6652,96 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_arrangement: function add_arrangement() {
-      var _this31 = this;
+    change_editing_index_or_update: function change_editing_index_or_update(arrangement) {
+      var _this30 = this;
 
-      this.axios.post("/api/arrangements/", {
-        api_token: $('#api_token').val(),
-        selectable_course_id: this.current_selectable_course.id,
-        classroom_id: this.new_arrangement_classroom_id,
-        weeks: "".concat(this.new_arrangement_week_start, "-").concat(this.new_arrangement_week_end),
-        sessions: "".concat(this.new_arrangement_day, ":").concat(this.new_arrangement_session_start, "-").concat(this.new_arrangement_session_end)
-      }).then(function (res) {
-        _this31.update_selectable_courses();
+      if (this.current_arrangement_id !== arrangement.id) {
+        this.current_arrangement_id = arrangement.id;
+        this.current_arrangement_classroom_id = arrangement.classroom_id;
 
-        if (!res.data.success) {
-          alert(res.data.message);
-        } else {
-          _this31.new_arrangement_week_start = 0;
-          _this31.new_arrangement_week_end = 0;
-          _this31.new_arrangement_day = 0;
-          _this31.new_arrangement_session_start = 0;
-          _this31.new_arrangement_session_end = 0;
-          _this31.new_arrangement_classroom_id = 0;
-        }
-      })["catch"](function (res) {
-        if (res.response && res.response.data && res.data.errors) {
-          var str = '';
+        var _arrangement$weeks$sp = arrangement.weeks.split('-'),
+            _arrangement$weeks$sp2 = _slicedToArray(_arrangement$weeks$sp, 2),
+            week_start = _arrangement$weeks$sp2[0],
+            week_end = _arrangement$weeks$sp2[1];
 
-          for (var _i32 = 0, _Object$values32 = Object.values(res.response.data.errors); _i32 < _Object$values32.length; _i32++) {
-            var i = _Object$values32[_i32];
-            var _iteratorNormalCompletion32 = true;
-            var _didIteratorError32 = false;
-            var _iteratorError32 = undefined;
+        this.current_arrangement_week_start = week_start;
+        this.current_arrangement_week_end = week_end;
 
-            try {
-              for (var _iterator32 = i[Symbol.iterator](), _step32; !(_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done); _iteratorNormalCompletion32 = true) {
-                var error = _step32.value;
-                str += "".concat(i, "\n");
-              }
-            } catch (err) {
-              _didIteratorError32 = true;
-              _iteratorError32 = err;
-            } finally {
+        var _arrangement$sessions = arrangement.sessions.split(':'),
+            _arrangement$sessions2 = _slicedToArray(_arrangement$sessions, 2),
+            day = _arrangement$sessions2[0],
+            sessions = _arrangement$sessions2[1];
+
+        this.current_arrangement_day = day;
+
+        var _sessions$split = sessions.split('-'),
+            _sessions$split2 = _slicedToArray(_sessions$split, 2),
+            session_start = _sessions$split2[0],
+            session_end = _sessions$split2[1];
+
+        this.current_arrangement_session_start = session_start;
+        this.current_arrangement_session_end = session_end;
+      } else {
+        this.axios.patch("/api/arrangements/".concat(arrangement.id), {
+          api_token: $('#api_token').val(),
+          classroom_id: this.current_arrangement_classroom_id,
+          weeks: "".concat(this.current_arrangement_week_start, "-").concat(this.current_arrangement_week_end),
+          sessions: "".concat(this.current_arrangement_day, ":").concat(this.current_arrangement_session_start, "-").concat(this.current_arrangement_session_end)
+        }).then(function (res) {
+          _this30.update_selectable_courses();
+
+          if (!res.data.success) {
+            alert(res.data.message);
+          } else {
+            _this30.current_arrangement_id = 0;
+          }
+        })["catch"](function (res) {
+          if (res.response && res.response.data && res.data.errors) {
+            var str = '';
+
+            for (var _i32 = 0, _Object$values32 = Object.values(res.response.data.errors); _i32 < _Object$values32.length; _i32++) {
+              var i = _Object$values32[_i32];
+              var _iteratorNormalCompletion32 = true;
+              var _didIteratorError32 = false;
+              var _iteratorError32 = undefined;
+
               try {
-                if (!_iteratorNormalCompletion32 && _iterator32["return"] != null) {
-                  _iterator32["return"]();
+                for (var _iterator32 = i[Symbol.iterator](), _step32; !(_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done); _iteratorNormalCompletion32 = true) {
+                  var error = _step32.value;
+                  str += "".concat(i, "\n");
                 }
+              } catch (err) {
+                _didIteratorError32 = true;
+                _iteratorError32 = err;
               } finally {
-                if (_didIteratorError32) {
-                  throw _iteratorError32;
+                try {
+                  if (!_iteratorNormalCompletion32 && _iterator32["return"] != null) {
+                    _iterator32["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError32) {
+                    throw _iteratorError32;
+                  }
                 }
               }
             }
+
+            alert(str);
           }
-
-          alert(str);
-        }
-      });
+        });
+      }
     },
-    add_building_info: function add_building_info() {
-      var _this32 = this;
+    delete_arrangement: function delete_arrangement(arrangement_id) {
+      var _this31 = this;
 
-      this.axios.post("/api/buildings", {
-        api_token: $('#api_token').val(),
-        name: this.current_building.name
-      }).then(function (res) {
-        _this32.update_buildings();
-
-        $('.modal').modal('hide');
-
-        if (res.data.message) {
-          alert(res.data.message);
+      this.axios["delete"]("/api/arrangements/".concat(arrangement_id), {
+        data: {
+          api_token: $('#api_token').val()
         }
+      }).then(function (res) {
+        _this31.update_selectable_courses();
+
+        _this31.current_arrangement_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6634,22 +6777,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_classroom_info: function add_classroom_info() {
-      var _this33 = this;
+    delete_selectable_course: function delete_selectable_course(selectable_course) {
+      var _this32 = this;
 
-      this.axios.post("/api/classrooms", {
-        api_token: $('#api_token').val(),
-        name: this.current_classroom.name,
-        number: this.current_classroom.number,
-        building_id: this.current_classroom.building_id
-      }).then(function (res) {
-        _this33.update_classrooms();
-
-        $('.modal').modal('hide');
-
-        if (res.data.message) {
-          alert(res.data.message);
+      this.axios["delete"]("/api/selectable_course/".concat(selectable_course.id), {
+        data: {
+          api_token: $('#api_token').val()
         }
+      }).then(function (res) {
+        _this32.update_selectable_courses();
+
+        _this32.current_selectable_course_id = 0;
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
           var str = '';
@@ -6685,19 +6823,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_department_info: function add_department_info() {
-      var _this34 = this;
+    add_arrangement: function add_arrangement() {
+      var _this33 = this;
 
-      this.axios.post("/api/departments", {
+      this.axios.post("/api/arrangements/", {
         api_token: $('#api_token').val(),
-        name: this.current_department.name
+        selectable_course_id: this.current_selectable_course.id,
+        classroom_id: this.new_arrangement_classroom_id,
+        weeks: "".concat(this.new_arrangement_week_start, "-").concat(this.new_arrangement_week_end),
+        sessions: "".concat(this.new_arrangement_day, ":").concat(this.new_arrangement_session_start, "-").concat(this.new_arrangement_session_end)
       }).then(function (res) {
-        _this34.update_departments();
+        _this33.update_selectable_courses();
 
-        $('.modal').modal('hide');
-
-        if (res.data.message) {
+        if (!res.data.success) {
           alert(res.data.message);
+        } else {
+          _this33.new_arrangement_week_start = 0;
+          _this33.new_arrangement_week_end = 0;
+          _this33.new_arrangement_day = 0;
+          _this33.new_arrangement_session_start = 0;
+          _this33.new_arrangement_session_end = 0;
+          _this33.new_arrangement_classroom_id = 0;
         }
       })["catch"](function (res) {
         if (res.response && res.response.data && res.data.errors) {
@@ -6734,15 +6880,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    add_major_info: function add_major_info() {
-      var _this35 = this;
+    add_building_info: function add_building_info() {
+      var _this34 = this;
 
-      this.axios.post("/api/majors", {
+      this.axios.post("/api/buildings", {
         api_token: $('#api_token').val(),
-        name: this.current_major.name,
-        department_id: this.current_major.department_id
+        name: this.current_building.name
       }).then(function (res) {
-        _this35.update_majors();
+        _this34.update_buildings();
 
         $('.modal').modal('hide');
 
@@ -6784,8 +6929,158 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
-    finish: function finish() {
+    add_classroom_info: function add_classroom_info() {
+      var _this35 = this;
+
+      this.axios.post("/api/classrooms", {
+        api_token: $('#api_token').val(),
+        name: this.current_classroom.name,
+        number: this.current_classroom.number,
+        building_id: this.current_classroom.building_id
+      }).then(function (res) {
+        _this35.update_classrooms();
+
+        $('.modal').modal('hide');
+
+        if (res.data.message) {
+          alert(res.data.message);
+        }
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i37 = 0, _Object$values37 = Object.values(res.response.data.errors); _i37 < _Object$values37.length; _i37++) {
+            var i = _Object$values37[_i37];
+            var _iteratorNormalCompletion37 = true;
+            var _didIteratorError37 = false;
+            var _iteratorError37 = undefined;
+
+            try {
+              for (var _iterator37 = i[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
+                var error = _step37.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError37 = true;
+              _iteratorError37 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion37 && _iterator37["return"] != null) {
+                  _iterator37["return"]();
+                }
+              } finally {
+                if (_didIteratorError37) {
+                  throw _iteratorError37;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    add_department_info: function add_department_info() {
       var _this36 = this;
+
+      this.axios.post("/api/departments", {
+        api_token: $('#api_token').val(),
+        name: this.current_department.name
+      }).then(function (res) {
+        _this36.update_departments();
+
+        $('.modal').modal('hide');
+
+        if (res.data.message) {
+          alert(res.data.message);
+        }
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i38 = 0, _Object$values38 = Object.values(res.response.data.errors); _i38 < _Object$values38.length; _i38++) {
+            var i = _Object$values38[_i38];
+            var _iteratorNormalCompletion38 = true;
+            var _didIteratorError38 = false;
+            var _iteratorError38 = undefined;
+
+            try {
+              for (var _iterator38 = i[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
+                var error = _step38.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError38 = true;
+              _iteratorError38 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion38 && _iterator38["return"] != null) {
+                  _iterator38["return"]();
+                }
+              } finally {
+                if (_didIteratorError38) {
+                  throw _iteratorError38;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    add_major_info: function add_major_info() {
+      var _this37 = this;
+
+      this.axios.post("/api/majors", {
+        api_token: $('#api_token').val(),
+        name: this.current_major.name,
+        department_id: this.current_major.department_id
+      }).then(function (res) {
+        _this37.update_majors();
+
+        $('.modal').modal('hide');
+
+        if (res.data.message) {
+          alert(res.data.message);
+        }
+      })["catch"](function (res) {
+        if (res.response && res.response.data && res.data.errors) {
+          var str = '';
+
+          for (var _i39 = 0, _Object$values39 = Object.values(res.response.data.errors); _i39 < _Object$values39.length; _i39++) {
+            var i = _Object$values39[_i39];
+            var _iteratorNormalCompletion39 = true;
+            var _didIteratorError39 = false;
+            var _iteratorError39 = undefined;
+
+            try {
+              for (var _iterator39 = i[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+                var error = _step39.value;
+                str += "".concat(i, "\n");
+              }
+            } catch (err) {
+              _didIteratorError39 = true;
+              _iteratorError39 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion39 && _iterator39["return"] != null) {
+                  _iterator39["return"]();
+                }
+              } finally {
+                if (_didIteratorError39) {
+                  throw _iteratorError39;
+                }
+              }
+            }
+          }
+
+          alert(str);
+        }
+      });
+    },
+    finish: function finish() {
+      var _this38 = this;
 
       this.axios.post('/api/finish', {
         api_token: $('#api_token').val(),
@@ -6793,18 +7088,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }).then(function (res) {
         console.log(res);
 
-        _this36.get_finish();
+        _this38.get_finish();
       });
     },
     get_finish: function get_finish() {
-      var _this37 = this;
+      var _this39 = this;
 
       this.axios.get('/api/finish', {
         params: {
           api_token: $('#api_token').val()
         }
       }).then(function (res) {
-        _this37.finish_date = new Date(res.data);
+        _this39.finish_date = new Date(res.data);
       });
     }
   }
@@ -65729,6 +66024,21 @@ var render = function() {
             {
               staticClass: "list-group-item list-group-item-action",
               attrs: {
+                id: "list-tab-classes-list",
+                "data-toggle": "list",
+                href: "#list-tab-classes",
+                role: "tab",
+                "aria-controls": "tab-classes"
+              }
+            },
+            [_vm._v("管理班级信息")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "list-group-item list-group-item-action",
+              attrs: {
                 id: "list-tab-selectable_course-list",
                 "data-toggle": "list",
                 href: "#list-tab-selectable_course",
@@ -67533,6 +67843,545 @@ var render = function() {
             {
               staticClass: "tab-pane fade",
               attrs: {
+                id: "list-tab-classes",
+                role: "tabpanel",
+                "aria-labelledby": "list-tab-classes-list"
+              }
+            },
+            [
+              _c("div", { staticClass: "card" }, [
+                _c("h5", { staticClass: "card-header" }, [
+                  _vm._v("管理班级信息")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary form-control",
+                          attrs: {
+                            "data-toggle": "modal",
+                            "data-target": "#classesModel"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.change_model_state(false)
+                            }
+                          }
+                        },
+                        [_vm._v("添加\n                                ")]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered mt-4 text-center" },
+                    [
+                      _vm._m(12),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.classess, function(classes, index) {
+                          return _c("tr", [
+                            _c("th", [_vm._v(_vm._s(classes.name))]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v(_vm._s(classes.department.name))]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(classes.compulsory_credit))
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _vm._v(_vm._s(classes.restriction_credit))
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v(_vm._s(classes.optional_credit))]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    "data-toggle": "modal",
+                                    "data-target": "#classesModel"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.change_current_classes(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("修改")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.delete_classes(classes.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "删除\n                                    "
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "modal fade",
+                      attrs: {
+                        id: "classesModel",
+                        tabindex: "-1",
+                        role: "dialog",
+                        "aria-labelledby": "classesModelTitle",
+                        "aria-hidden": "true"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "modal-dialog modal-dialog-centered",
+                          attrs: { role: "document" }
+                        },
+                        [
+                          _c("div", { staticClass: "modal-content" }, [
+                            _vm._m(13),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-body" }, [
+                              _c(
+                                "div",
+                                { staticClass: "row justify-content-center" },
+                                [
+                                  _c("div", { staticClass: "col" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "number" }
+                                          },
+                                          [_vm._v("班号")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model:value",
+                                                value:
+                                                  _vm.current_classes.number,
+                                                expression:
+                                                  "current_classes.number",
+                                                arg: "value"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "text",
+                                              name: "number",
+                                              autofocus: ""
+                                            },
+                                            domProps: {
+                                              value: _vm.current_classes.number
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.current_classes,
+                                                  "number",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "name" }
+                                          },
+                                          [_vm._v("班级名")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model:value",
+                                                value: _vm.current_classes.name,
+                                                expression:
+                                                  "current_classes.name",
+                                                arg: "value"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "text",
+                                              name: "name"
+                                            },
+                                            domProps: {
+                                              value: _vm.current_classes.name
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.current_classes,
+                                                  "name",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "gender" }
+                                          },
+                                          [_vm._v("必修学分")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model:value",
+                                                value:
+                                                  _vm.current_classes
+                                                    .compulsory_credit,
+                                                expression:
+                                                  "current_classes.compulsory_credit",
+                                                arg: "value"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              name: "gender"
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.current_classes
+                                                  .compulsory_credit
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.current_classes,
+                                                  "compulsory_credit",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "gender" }
+                                          },
+                                          [_vm._v("限选学分")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model:value",
+                                                value:
+                                                  _vm.current_classes
+                                                    .restriction_credit,
+                                                expression:
+                                                  "current_classes.restriction_credit",
+                                                arg: "value"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              name: "gender"
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.current_classes
+                                                  .restriction_credit
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.current_classes,
+                                                  "restriction_credit",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "gender" }
+                                          },
+                                          [_vm._v("任选学分")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model:value",
+                                                value:
+                                                  _vm.current_classes
+                                                    .optional_credit,
+                                                expression:
+                                                  "current_classes.optional_credit",
+                                                arg: "value"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              name: "gender"
+                                            },
+                                            domProps: {
+                                              value:
+                                                _vm.current_classes
+                                                  .optional_credit
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.current_classes,
+                                                  "optional_credit",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group row" },
+                                      [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass:
+                                              "col-md-3 col-form-label text-md-right",
+                                            attrs: { for: "department_id" }
+                                          },
+                                          [_vm._v("院系")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "col" }, [
+                                          _c(
+                                            "select",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model:value",
+                                                  value:
+                                                    _vm.current_classes
+                                                      .department_id,
+                                                  expression:
+                                                    "current_classes.department_id",
+                                                  arg: "value"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              attrs: { name: "department" },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.$set(
+                                                    _vm.current_classes,
+                                                    "department_id",
+                                                    $event.target.multiple
+                                                      ? $$selectedVal
+                                                      : $$selectedVal[0]
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "0" } },
+                                                [_vm._v("--选择院系--")]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm._l(_vm.departments, function(
+                                                department
+                                              ) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    domProps: {
+                                                      value: department.id
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(department.name) +
+                                                        "\n                                                            "
+                                                    )
+                                                  ]
+                                                )
+                                              })
+                                            ],
+                                            2
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-footer" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary",
+                                  attrs: {
+                                    type: "button",
+                                    "data-dismiss": "modal"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "取消\n                                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: { click: _vm.update_classes_info }
+                                },
+                                [
+                                  _vm._v(
+                                    "保存信息\n                                        "
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade",
+              attrs: {
                 id: "list-tab-selectable_course",
                 role: "tabpanel",
                 "aria-labelledby": "list-tab-selectable_course-list"
@@ -67602,9 +68451,9 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(12),
+                    _vm._m(14),
                     _vm._v(" "),
-                    _vm._m(13),
+                    _vm._m(15),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-2" }, [
                       _c(
@@ -67641,7 +68490,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(14),
+                      _vm._m(16),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -67774,7 +68623,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(15),
+                            _vm._m(17),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c("div", { staticClass: "row" }, [
@@ -68168,7 +69017,7 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md-8" }, [
-                                  _vm._m(16),
+                                  _vm._m(18),
                                   _vm._v(" "),
                                   _c(
                                     "ul",
@@ -68907,7 +69756,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(17),
+                      _vm._m(19),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69020,7 +69869,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(18),
+                            _vm._m(20),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -69168,7 +70017,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(19),
+                      _vm._m(21),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69357,7 +70206,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(20),
+                            _vm._m(22),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -69643,7 +70492,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(21),
+                      _vm._m(23),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -69756,7 +70605,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(22),
+                            _vm._m(24),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -69904,7 +70753,7 @@ var render = function() {
                     "table",
                     { staticClass: "table table-bordered mt-4 text-center" },
                     [
-                      _vm._m(23),
+                      _vm._m(25),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -70093,7 +70942,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "modal-content" }, [
-                            _vm._m(24),
+                            _vm._m(26),
                             _vm._v(" "),
                             _c("div", { staticClass: "modal-body" }, [
                               _c(
@@ -70677,6 +71526,53 @@ var staticRenderFns = [
         "h5",
         { staticClass: "modal-title", attrs: { id: "courseModelTitle" } },
         [_vm._v("编辑课程信息")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("班级名称")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("学院")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("必修学分")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("限选学分")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("任选学分")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("修改")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("删除")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "classesModelTitle" } },
+        [_vm._v("编辑班级信息")]
       ),
       _vm._v(" "),
       _c(
@@ -71743,7 +72639,11 @@ var render = function() {
                               type: "text",
                               disabled: ""
                             },
-                            domProps: { value: _vm.user.classes.name }
+                            domProps: {
+                              value: _vm.user.classes
+                                ? _vm.user.classes.name
+                                : ""
+                            }
                           })
                         ])
                       ]),
