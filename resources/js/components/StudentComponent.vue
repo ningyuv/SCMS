@@ -88,7 +88,7 @@
                                     <th>{{ course.course.credit }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
                                         </div>
                                     </th>
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>
@@ -191,7 +191,7 @@
                                     <th>{{ course.course.credit }}</th>
                                     <th>
                                         <div v-for="arrangement in course.arrangements">
-                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
+                                            {{ arrangement.weeks }}周 星期{{ arrangement.sessions }}节 {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{ arrangement.classroom?arrangement.classroom.name:'无教室' }}
                                         </div>
                                     </th>
                                     <th>{{ course.teacher?course.teacher.name:'' }}</th>

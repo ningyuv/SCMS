@@ -71244,6 +71244,13 @@ var render = function() {
                                           "节 " +
                                           _vm._s(
                                             arrangement.classroom
+                                              ? arrangement.classroom.building
+                                                  .name
+                                              : ""
+                                          ) +
+                                          " " +
+                                          _vm._s(
+                                            arrangement.classroom
                                               ? arrangement.classroom.name
                                               : "无教室"
                                           ) +
@@ -71530,6 +71537,12 @@ var render = function() {
                                       "周 星期" +
                                       _vm._s(arrangement.sessions) +
                                       "节 " +
+                                      _vm._s(
+                                        arrangement.classroom
+                                          ? arrangement.classroom.building.name
+                                          : ""
+                                      ) +
+                                      " " +
                                       _vm._s(
                                         arrangement.classroom
                                           ? arrangement.classroom.name
