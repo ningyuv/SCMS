@@ -73139,7 +73139,7 @@ var render = function() {
                                                                   _vm._s(
                                                                     arrangement.weeks
                                                                   ) +
-                                                                  " weeks\n                                                        "
+                                                                  " 周\n                                                        "
                                                               )
                                                             ]),
                                                             _vm._v(" "),

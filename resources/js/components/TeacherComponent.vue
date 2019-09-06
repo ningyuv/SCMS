@@ -57,7 +57,7 @@
                                                                 arrangement.selectable_course.course.name }}
                                                             </div>
                                                             <div>
-                                                                {{ arrangement.weeks }} weeks
+                                                                {{ arrangement.weeks }} 周
                                                             </div>
                                                             <div>
                                                                 {{ arrangement.classroom?arrangement.classroom.building.name:'' }} {{
